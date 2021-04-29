@@ -1,14 +1,9 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * This class is the Super class of all the task types it holds the basic information and methods that all the tasks would need to have.
  */
 public class Task {
   // List of general types all tasks can do
-  private final String[] typesArray = { "Class", "Study", "Sleep", "Exercise", "Work", "Meal" };
-  private final List<String> types = new ArrayList<String>(Arrays.asList( typesArray ));
+  private final String[] types = { "Class", "Study", "Sleep", "Exercise", "Work", "Meal" };
 
   private String taskName;
   private String type;
@@ -25,17 +20,15 @@ public class Task {
    * @param startDate
    * @param duration
    */
-  public Task( String taskName, String type, double startTime, int startDate, double duration ) {
+  public Task( String taskName, String type, double startTime, int startDate, double duration ) throws RestrictionCheckFailedException {
     this.taskName = taskName;
     this.startTime = startTime;
     this.startDate = startDate;
     this.duration = duration;
 
-    // Checks to make sure a valid type is given, makes the type "Error" if not
-    if ( types.contains(type) == false ) {
-      this.type = "Error";
-    } else {
-      this.type = type;
+
+    if ( checkRestrictions() == false ) {
+      throw new RestrictionCheckFailedException( "Restriction check failed." );
     }
   }
 
@@ -45,5 +38,22 @@ public class Task {
    */
   public static boolean checkRestrictions() {
     // TODO: add task restriction checks in here
+  }
+
+  /**
+   * Checks to make sure type input is a valid one.
+   * @param type  Type of task to check i.e. Class, Study, Sleep...
+   * @return contains Returns true if type is valid
+   */
+  public boolean checkType( String type ) {
+    // Checks to make sure a valid type is given, makes the type "Error" if not
+    boolean contains = false;
+    for ( int i = 0; i < types.length; i++ ) {
+      if ( type == types[i] ) {
+        contains = true;
+        break;
+      }
+    }
+    return contains;
   }
 }
