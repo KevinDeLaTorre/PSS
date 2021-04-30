@@ -36,8 +36,9 @@ public class Task {
    * Goes through several different checks to make sure this task is valid for the PSS system.
    * @return valid  Returns true if the attempted task object passes all restriction checks.
    */
-  public static boolean checkRestrictions() {
+  public boolean checkRestrictions() {
     // TODO: add task restriction checks in here
+    return false;
   }
 
   /**

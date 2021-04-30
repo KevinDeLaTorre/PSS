@@ -44,7 +44,7 @@ public class DataFile {
    * Converts json file into Tasks
    * @return output Returns a vector of Tasks
    */
-  private public Vector<Task> jsonToTask() {
+  private Vector<Task> jsonToTask() {
 
   }
 
