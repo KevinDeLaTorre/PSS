@@ -5,11 +5,11 @@ public class Task {
   // List of general types all tasks can do
   private final String[] types = { "Class", "Study", "Sleep", "Exercise", "Work", "Meal" };
 
-  private String taskName;
-  private String type;
-  private double startTime;
-  private int startDate;
-  private double duration;
+  private String _taskName;
+  private String _type;
+  private double _startTime;
+  private int _startDate;
+  private double _duration;
 
 
   /**
@@ -21,10 +21,10 @@ public class Task {
    * @param duration
    */
   public Task( String taskName, String type, double startTime, int startDate, double duration ) throws RestrictionCheckFailedException {
-    this.taskName = taskName;
-    this.startTime = startTime;
-    this.startDate = startDate;
-    this.duration = duration;
+    _taskName = taskName;
+    _startTime = startTime;
+    _startDate = startDate;
+    _duration = duration;
 
 
     if ( checkRestrictions() == false ) {

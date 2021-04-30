@@ -5,12 +5,12 @@ import java.util.Vector;
  * Because this class has a list of all the tasks it is also in charge of interfacing with the Report class to generate reports.
  */
 public class Calendar {
-  private Vector<Task> listOfTasks;
-  private String filename;
+  private Vector<Task> _listOfTasks;
+  private String _filename;
 
   public Calendar( String filename ) {
-    listOfTasks = new Vector<Task>();
-    this.filename = filename;
+    _listOfTasks = new Vector<Task>();
+    _filename = filename;
   }
 
   public boolean scheduleTask( Task newTask ) {
@@ -26,7 +26,7 @@ public class Calendar {
   }
 
   public Vector<Task> getAllTasks() {
-    return listOfTasks;
+    return _listOfTasks;
   }
 
   public boolean updateFile() {

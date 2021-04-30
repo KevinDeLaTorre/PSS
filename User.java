@@ -1,15 +1,15 @@
 public class User {
-  private int id;
-  private String name;
-  private String userFileName;
+  private int _id;
+  private String _name;
+  private String _userFileName;
 
   public String getFilename() {
-    return this.userFileName;
+    return _userFileName;
   }
 
   public boolean setFilename( String filename ) {
     // TODO: check if filename already exists and return false if it does
-    this.userFileName = filename;
+    _userFileName = filename;
     return true;
   }
 }
