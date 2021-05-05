@@ -14,7 +14,10 @@ public class Calendar {
   }
 
   public boolean scheduleTask( Task newTask ) {
+  }
 
+  public Task getTask( String taskName ) {
+    return task;
   }
 
   public boolean editTask( String taskName ) {
