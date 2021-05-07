@@ -57,4 +57,20 @@ public class Task {
     }
     return contains;
   }
+
+  public String getName() {
+    return _taskName;
+  }
+
+  public double getStartTime() {
+    return _startTime;
+  }
+
+  public int getStartDate() {
+    return _startDate;
+  }
+
+  public double getDuration() {
+    return _duration;
+  }
 }
