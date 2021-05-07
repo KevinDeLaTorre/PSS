@@ -1,4 +1,5 @@
 import java.util.Vector;
+import java.util.Collections;
 
 /**
  * Calendar class is in charge of scheduling and managing tasks, it will also update the file after every task change.
@@ -6,26 +7,29 @@ import java.util.Vector;
  */
 public class Calendar {
   private Vector<Task> _listOfTasks;
-  private String _filename;
+  private DataFile _file;
 
-  public Calendar( String filename ) {
+  public Calendar( DataFile file ) {
     _listOfTasks = new Vector<Task>();
-    _filename = filename;
+    _file = file;
   }
 
   public boolean scheduleTask( Task newTask ) {
   }
 
-  public Task getTask( String taskName ) {
-    return task;
+  public Task getTask( String taskName ) throws TaskNotFoundException {
+    for ( int i = 0; i < _listOfTasks.size(); i++ ) {
+      if ( _listOfTasks.get( i ).getName() == taskName ) {
+        return _listOfTasks.get( i );
+      }
+    }
+    throw new TaskNotFoundException( "Task not found." );
   }
 
   public boolean editTask( String taskName ) {
-
   }
 
   public boolean deleteTask( String taskName ) {
-
   }
 
   public Vector<Task> getAllTasks() {
