@@ -1,18 +1,18 @@
-import java.util.Vector;
+import java.util.ArrayList;
 
 /**
  * This class is in charge of reading/writing to task file including jsonifying the list of tasks or turning json into task objects.
  */
 public class DataFile {
   private String _filename;
-  private Vector<Task> _listOfTasks;
+  private ArrayList<Task> _listOfTasks;
 
   /**
    * This constructor should be used when trying to write to a file, so give it a list of tasks and interface that way.
    * @param filename
    * @param listOfTasks
    */
-  public DataFile( String filename, Vector<Task> listOfTasks ) {
+  public DataFile( String filename, ArrayList<Task> listOfTasks ) {
     _filename = filename;
     _listOfTasks = listOfTasks;
   }
@@ -30,7 +30,7 @@ public class DataFile {
    * Reads a JSON task file processes it into tasks, then sets this objects listOfTasks to the processed tasks returns the result.
    * @return listOfTasks  Returns the processed tasks from the file.
    */
-  private Vector<Task> readFile() {
+  private ArrayList<Task> readFile() {
 
   }
 
@@ -46,7 +46,7 @@ public class DataFile {
    * Converts json file into Tasks
    * @return output Returns a vector of Tasks
    */
-  private Vector<Task> jsonToTask() {
+  private ArrayList<Task> jsonToTask() {
 
   }
 
@@ -59,10 +59,10 @@ public class DataFile {
 
   /**
    * Updates _listOfTasks with new list given
-   * @param newTasks A Vector<Task> with new tasks to replace whats going to be written.
+   * @param newTasks A ArrayList<Task> with new tasks to replace whats going to be written.
    * @return success  Returns true if _listOfTasks was updated.
    */
-  public boolean updateTasks( Vector<Task> newTasks ) {
+  public boolean updateTasks( ArrayList<Task> newTasks ) {
     _listOfTasks = newTasks;
   }
 }

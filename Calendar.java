@@ -1,20 +1,26 @@
-import java.util.Vector;
 import java.util.Collections;
+import java.util.ArrayList;
 
 /**
  * Calendar class is in charge of scheduling and managing tasks, it will also update the file after every task change.
  * Because this class has a list of all the tasks it is also in charge of interfacing with the Report class to generate reports.
  */
 public class Calendar {
-  private Vector<Task> _listOfTasks;
+  private ArrayList<Task> _listOfTasks;
   private DataFile _file;
 
   public Calendar( DataFile file ) {
-    _listOfTasks = new Vector<Task>();
+    _listOfTasks = new ArrayList<Task>();
     _file = file;
   }
 
+  /**
+   * Schedules a task into the PSS system.
+   * @param newTask
+   * @return result Returns whether the scheduling was a success or not.
+   */
   public boolean scheduleTask( Task newTask ) {
+    // Check for name uniqueness
     if ( contains( newTask.getName() ) ) {
       return false;
     }
@@ -22,7 +28,14 @@ public class Calendar {
     return true;
   }
 
+  /**
+   * Searches the list of task and returns a Task object if the given taskname is found or throws an exception if not.
+   * @param taskName
+   * @return Task Returns the task if found.
+   * @throws TaskNotFoundException
+   */
   public Task getTask( String taskName ) throws TaskNotFoundException {
+    // Search list for taskname
     for ( int i = 0; i < _listOfTasks.size(); i++ ) {
       if ( _listOfTasks.get( i ).getName() == taskName ) {
         return _listOfTasks.get( i );
@@ -38,7 +51,7 @@ public class Calendar {
     return _listOfTasks.remove( getTask( taskName ) );
   }
 
-  public Vector<Task> getAllTasks() {
+  public ArrayList<Task> getAllTasks() {
     return _listOfTasks;
   }
 
@@ -51,7 +64,8 @@ public class Calendar {
   }
 
   public boolean writePartSchedule( String filename, int date, int frequency ) {
-
+    DataFile tmpFile = new DataFile( filename );
+    return tmpFile.writeToFile();
   }
 
   public String generateFullReport() {
@@ -61,6 +75,14 @@ public class Calendar {
   public String generatePartReport() {
   }
 
+  private void sortList() {
+  }
+
+  /**
+   * Helper class that checks if the list of tasks contains a task searched by name.
+   * @param name
+   * @return result Returns whether the list of tasks contains the task or not.
+   */
   private boolean contains( String name ) {
     try { 
       getTask( name );
