@@ -1,3 +1,5 @@
+import java.util.Vector;
+
 /**
  * This class is in charge of reading/writing to task file including jsonifying the list of tasks or turning json into task objects.
  */
@@ -53,7 +55,6 @@ public class DataFile {
    * @return success Returns true if write was successful
    */
   public boolean writeToFile() {
-
   }
 
   /**
