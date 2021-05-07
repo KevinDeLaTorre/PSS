@@ -1,7 +1,7 @@
 /**
  * This class is the Super class of all the task types it holds the basic information and methods that all the tasks would need to have.
  */
-public class Task {
+public class Task implements Comparable {
   // List of general types all tasks can do
   private final String[] types = { "Class", "Study", "Sleep", "Exercise", "Work", "Meal" };
 
@@ -72,5 +72,15 @@ public class Task {
 
   public double getDuration() {
     return _duration;
+  }
+  
+  /**
+   * Compares 2 tasks to sort in list by adding the date and time together and the smaller should be first meaning it goes before the other in the schedule.
+   * @param otherTask
+   * @return 
+   */
+  @Override
+  public int compareTo( Task otherTask ) {
+    return Double.compare((_startDate+_startTime), (otherTask._startDate+otherTask._startTime) );
   }
 }
