@@ -15,6 +15,11 @@ public class Calendar {
   }
 
   public boolean scheduleTask( Task newTask ) {
+    if ( contains( newTask.getName() ) ) {
+      return false;
+    }
+
+    return true;
   }
 
   public Task getTask( String taskName ) throws TaskNotFoundException {
@@ -30,6 +35,7 @@ public class Calendar {
   }
 
   public boolean deleteTask( String taskName ) {
+    return _listOfTasks.remove( getTask( taskName ) );
   }
 
   public Vector<Task> getAllTasks() {
@@ -37,6 +43,11 @@ public class Calendar {
   }
 
   public boolean updateFile() {
+    if ( _file.updateTasks( _listOfTasks ) ) {
+      return _file.writeToFile();
+    } else {
+      return false;
+    }
   }
 
   public boolean writePartSchedule( String filename, int date, int frequency ) {
@@ -48,6 +59,14 @@ public class Calendar {
   }
 
   public String generatePartReport() {
+  }
 
+  private boolean contains( String name ) {
+    try { 
+      getTask( name );
+      return true;
+    } catch ( TaskNotFoundException e ) {
+      return false;
+    }
   }
 }
