@@ -8,6 +8,13 @@ public class RecurringTask extends Task{
 		endDate = eDate;
 		frequency = freq;
 	}
+	
+	
+	// checkRestriction method
+	public boolean checkRestrictions() {
+	    // TODO: check restrictions for a recurring task
+	    return false;
+	  }
 
 }
 
