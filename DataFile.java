@@ -1,3 +1,14 @@
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.Vector;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
 /**
  * This class is in charge of reading/writing to task file including jsonifying the list of tasks or turning json into task objects.
  */
@@ -29,7 +40,8 @@ public class DataFile {
    * @return listOfTasks  Returns the processed tasks from the file.
    */
   private Vector<Task> readFile() {
-
+    _listOfTasks = (Vector)jsonToTask().clone();
+    return _listOfTasks;
   }
 
   /**
@@ -37,7 +49,21 @@ public class DataFile {
    * @return output Returns the resulting JSON string to write to file.
    */
   private String taskToJson() {
+    JSONArray jsonArray = new JSONArray();
+    Iterator<Task> iterator = _listOfTasks.iterator();
 
+    // TODO: Still need a way to check whether the task is recurring, transient, or anti task.
+    while(iterator.hasNext()) {
+      JSONObject jsonObj = new JSONObject();
+      Task taskObj = iterator.next();
+      jsonObj.put("Name", taskObj.getName());
+      jsonObj.put("Type", taskObj.getType());
+      jsonObj.put("StartTime", taskObj.getStartTime());
+      jsonObj.put("StartDate", taskObj.getStartDate());
+      jsonObj.put("Duration", taskObj.getDuration());
+      jsonArray.add(jsonObj);
+    }
+    return jsonArray.toJSONString();
   }
 
   /**
@@ -45,7 +71,30 @@ public class DataFile {
    * @return output Returns a vector of Tasks
    */
   private Vector<Task> jsonToTask() {
+    Vector<Task> tasks = new Vector<Task>();
+    JSONParser parser = new JSONParser();
 
+    try {
+      JSONArray jsonArray = parser.parse(new FileReader(_filename));
+      Iterator<JSONObject> iterator = jsonArray.iterator();
+
+      // TODO: Still need a way to check whether the task is recurring, transient, or anti task.
+      while(iterator.hasNext()) {
+        JSONObject jsonObj = iterator.next();
+        String name = (String)jsonObj.get("Name");
+        String type = (String)jsonObj.get("Type");
+        double startTime = jsonObj.get("StartTime");
+        int startDate = jsonObj.get("StartDate");
+        double duration = jsonObj.get("Duration");
+        Task t = new Task(name, type, startTime, startDate, duration);
+        tasks.add(t);
+      }
+      return tasks;
+    }
+    catch(FileNotFoundException e) { e.printStackTrace();}
+    catch(IOException e) { e.printStackTrace();}
+    catch(ParseException e) { e.printStackTrace();}
+    catch(Exception e) { e.printStackTrace();}
   }
 
   /**
@@ -53,7 +102,12 @@ public class DataFile {
    * @return success Returns true if write was successful
    */
   public boolean writeToFile() {
-
+    try(FileWriter file = new FileWriter(_filename)){
+      file.write(taskToJson());
+      file.flush();
+      return true;
+    }
+    catch(IOException e) {e.printStackTrace();}
   }
 
   /**
