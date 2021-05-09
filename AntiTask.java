@@ -1,6 +1,6 @@
 
-public class AntiTask extends Task{
-
+public class AntiTask extends Task {
+ 
 	public AntiTask(String taskName, String type, double startTime, int startDate, double duration) throws RestrictionCheckFailedException {
 		super(taskName, type, startTime, startDate, duration);
 		
