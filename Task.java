@@ -2,8 +2,9 @@
  * This class is the Super class of all the task types it holds the basic information and methods that all the tasks would need to have.
  */
 public class Task {
-  // List of general types all tasks can do
-  private final String[] types = { "Class", "Study", "Sleep", "Exercise", "Work", "Meal" };
+  
+  // List of general types of task
+  private final String[] types = {"Class", "Study", "Sleep", "Exercise", "Work", "Meal", "Visit", "Shopping", "Appointment"};
 
   private String _taskName;
   private String _type;
@@ -21,25 +22,47 @@ public class Task {
    * @param duration
    */
   public Task( String taskName, String type, double startTime, int startDate, double duration ) throws RestrictionCheckFailedException {
-    _taskName = taskName;
-    _startTime = startTime;
-    _startDate = startDate;
-    _duration = duration;
+	  
+	boolean result = checkRestrictions(taskName, startTime, duration, startDate); 
+	if(result == false) {
+		throw new RestrictionCheckFailedException( "Restriction check failed." );
+	}
+	else {
+		_taskName = taskName;
+		_startTime = startTime;
+		_startDate = startDate;
+		_duration = duration;
+	}
 
-
-    if ( checkRestrictions() == false ) {
-      throw new RestrictionCheckFailedException( "Restriction check failed." );
-    }
   }
 
   /**
    * Goes through several different checks to make sure this task is valid for the PSS system.
    * @return valid  Returns true if the attempted task object passes all restriction checks.
    */
-  public boolean checkRestrictions() {
-    // TODO: add task restriction checks in here
-    return false;
-  }
+  public boolean checkRestrictions(String taskName, double startTime, double duration, int startDate) {
+	    // TODO: add task restriction checks if taskName is valid
+		  
+		// validate startTime 
+		if(startTime >= 0 && startTime <= 23.75) {
+			if((startTime % 0.25) == 0) {
+				return true;
+			}
+		}
+		else 
+			return false;
+		
+		
+		// validate duration
+		if(duration >= 0.25 && duration <= 23.75) {
+			if((duration % 0.25) == 0) {
+				return true;
+			}
+		}
+		else
+			return false;
+		return false;
+	  }
 
   /**
    * Checks to make sure type input is a valid one.
