@@ -18,8 +18,23 @@ public class RecurringTask extends Task{
 	public boolean checkRestrictions() {
 	    // TODO: check restrictions for a recurring task
 	    return false;
-	  }
+	}
 
+	public int getEndDate() {
+		return endDate;
+	}
+
+	public int getFrequency(){
+		return frequency;
+	}
+
+	/**
+    * Checks to make sure this task is a recurring task.
+    * @return Returns true
+    */
+	public boolean isRecurringTask() {
+		return true;
+	}
 }
 
 

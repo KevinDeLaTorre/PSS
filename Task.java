@@ -62,6 +62,10 @@ public class Task {
     return _taskName;
   }
 
+  public String getType() {
+    return _type;
+  }
+
   public double getStartTime() {
     return _startTime;
   }
@@ -72,5 +76,13 @@ public class Task {
 
   public double getDuration() {
     return _duration;
+  }
+
+  /**
+   * Checks to make sure this task is a recurring task.
+   * @return Returns false
+   */
+  public boolean isRecurringTask() {
+    return false;
   }
 }

@@ -57,20 +57,28 @@ public class DataFile {
    * 
    * @return output Returns the resulting JSON string to write to file.
    */
+  @SuppressWarnings("unchecked")
   private String taskToJson() {
     JSONArray jsonArray = new JSONArray();
     Iterator<Task> iterator = _listOfTasks.iterator();
 
-    // TODO: Still need a way to check whether the task is recurring, transient, or
-    // anti task.
     while (iterator.hasNext()) {
       JSONObject jsonObj = new JSONObject();
       Task taskObj = iterator.next();
       jsonObj.put("Name", taskObj.getName());
-      // jsonObj.put("Type", taskObj.getType());
-      jsonObj.put("StartTime", taskObj.getStartTime());
-      jsonObj.put("StartDate", taskObj.getStartDate());
-      jsonObj.put("Duration", taskObj.getDuration());
+      jsonObj.put("Type", taskObj.getType());
+      if (taskObj.isRecurringTask()) {
+        jsonObj.put("StartDate", taskObj.getStartDate());
+        jsonObj.put("StartTime", taskObj.getStartTime());
+        jsonObj.put("Duration", taskObj.getDuration());
+        jsonObj.put("EndDate", ((RecurringTask) taskObj).getEndDate());
+        jsonObj.put("Frequency", ((RecurringTask) taskObj).getFrequency());
+      }
+      else {
+        jsonObj.put("Date", taskObj.getStartDate());
+        jsonObj.put("StartTime", taskObj.getStartTime());
+        jsonObj.put("Duration", taskObj.getDuration());
+      }
       jsonArray.add(jsonObj);
     }
     return jsonArray.toJSONString();
@@ -82,24 +90,32 @@ public class DataFile {
    * @return output Returns a vector of Tasks
    */
   private Vector<Task> jsonToTask() {
-    Vector<Task> tasks = new Vector<Task>();
+    Vector<Task> taskList = new Vector<Task>();
     JSONParser parser = new JSONParser();
 
     try {
       JSONArray jsonArray = (JSONArray) parser.parse(new FileReader(_filename));
       Iterator<JSONObject> iterator = jsonArray.iterator();
 
-      // TODO: Still need a way to check whether the task is recurring, transient, or
-      // anti task.
       while (iterator.hasNext()) {
+        Task task;
         JSONObject jsonObj = iterator.next();
         String name = (String) jsonObj.get("Name");
         String type = (String) jsonObj.get("Type");
         double startTime = (double) jsonObj.get("StartTime");
-        int startDate = (int) jsonObj.get("StartDate");
         double duration = (double) jsonObj.get("Duration");
-        Task t = new Task(name, type, startTime, startDate, duration);
-        tasks.add(t);
+
+        if (jsonObj.containsKey("Frequency")) {
+          int endDate = (int) jsonObj.get("EndDate");
+          int frequency = (int) jsonObj.get("Frequency");
+          int startDate = (int) jsonObj.get("StartDate");
+          task = new RecurringTask(name, type, startTime, startDate, duration, endDate, frequency);
+        }
+        else {
+          int date = (int) jsonObj.get("Date");
+          task = new Task(name, type, startTime, date, duration);
+        }
+        taskList.add(task);
       }
     } catch (FileNotFoundException e) {
       e.printStackTrace();
@@ -110,7 +126,7 @@ public class DataFile {
     } catch (Exception e) {
       e.printStackTrace();
     }
-    return tasks;
+    return taskList;
   }
 
   /**
@@ -136,6 +152,7 @@ public class DataFile {
    * @return success Returns true if _listOfTasks was updated.
    */
   public boolean updateTasks(Vector<Task> newTasks) {
-    _listOfTasks = newTasks;
+    _listOfTasks = (Vector) newTasks.clone();
+    return true;
   }
 }
