@@ -9,7 +9,7 @@ public class AntiTask extends Task {
 		}
 	}
 
-	public boolean checkExtraRestrictions()
+	public boolean checkRestrictions()
 	{
 		// TODO: check additional restrictions
 		return false;
