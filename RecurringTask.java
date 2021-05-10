@@ -1,5 +1,9 @@
 
 public class RecurringTask extends Task{
+	
+	// resurring task types
+	private final String[] types = { "Class", "Study", "Sleep", "Exercise", "Work", "Meal" };
+	
 	private int endDate;
 	private int frequency;
 	
