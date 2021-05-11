@@ -35,6 +35,7 @@ public class Calendar {
     }
 
     // TODO: Check if time overlap
+    
 
     _listOfTasks.get( newTask.getStartDate() ).add( newTask ); // Add task to listOfTasks
     Collections.sort(_listOfTasks.get( newTask.getStartDate())); // Sort arraylist by date/time after adding new task in
@@ -149,9 +150,9 @@ public class Calendar {
 
   private int getNextDay( int date ) {
     String tmpString = String.valueOf( date ); // Date should be in format YYYYMMDD
-    int year = Integer.parseInt(tmpString.substring(0, 3)); // YYYY
-    int month = Integer.parseInt(tmpString.substring(4, 5)); // MM
-    int day = Integer.parseInt(tmpString.substring(6, 7)); // DD
+    int year = Integer.parseInt(tmpString.substring(0, 4)); // YYYY
+    int month = Integer.parseInt(tmpString.substring(4, 6)); // MM
+    int day = Integer.parseInt(tmpString.substring(6, 8)); // DD
     
     tmpString = "";
     boolean changeMonth = false;
