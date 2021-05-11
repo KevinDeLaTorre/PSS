@@ -3,7 +3,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.Vector;
+import java.util.ArrayList;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -25,14 +25,14 @@ public class DataFile {
    * @param filename
    * @param listOfTasks
    */
-  public DataFile(String filename, Vector<Task> listOfTasks) {
+  public DataFile(String filename, ArrayList<Task> listOfTasks) {
     _filename = filename;
     _listOfTasks = listOfTasks;
   }
 
   /**
    * This constructor should be used when trying to read from a file, give it a
-   * file name and it will process it into a Vector
+   * file name and it will process it into a ArrayList
    * 
    * @param filename JSON file with task data
    */
@@ -47,8 +47,8 @@ public class DataFile {
    * 
    * @return listOfTasks Returns the processed tasks from the file.
    */
-  private Vector<Task> readFile() {
-    _listOfTasks = (Vector) jsonToTask().clone();
+  private ArrayList<Task> readFile() {
+    _listOfTasks = (ArrayList) jsonToTask().clone();
     return _listOfTasks;
   }
 
@@ -89,8 +89,8 @@ public class DataFile {
    * 
    * @return output Returns a vector of Tasks
    */
-  private Vector<Task> jsonToTask() {
-    Vector<Task> taskList = new Vector<Task>();
+  private ArrayList<Task> jsonToTask() {
+    ArrayList<Task> taskList = new ArrayList<Task>();
     JSONParser parser = new JSONParser();
 
     try {
@@ -147,12 +147,12 @@ public class DataFile {
   /**
    * Updates _listOfTasks with new list given
    * 
-   * @param newTasks A Vector<Task> with new tasks to replace whats going to be
+   * @param newTasks A ArrayList<Task> with new tasks to replace whats going to be
    *                 written.
    * @return success Returns true if _listOfTasks was updated.
    */
-  public boolean updateTasks(Vector<Task> newTasks) {
-    _listOfTasks = (Vector) newTasks.clone();
+  public boolean updateTasks(ArrayList<Task> newTasks) {
+    _listOfTasks = (ArrayList<Task>) newTasks.clone();
     return true;
   }
 }
