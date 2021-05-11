@@ -165,7 +165,7 @@ public class Calendar {
    * Generate a full report with all of the tasks
    * @return Returns a string of table of the full schedule
    */
-  public String generateFullReport() {
+  public String generateReport() {
     Report report = new Report(getAllTasks());
     return report.generateFullSchedule();
   }
