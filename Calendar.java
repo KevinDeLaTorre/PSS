@@ -44,6 +44,21 @@ public class Calendar {
   }
 
   /**
+   * Allows scheduling of multiple task when given an arraylist of tasks, if there's a task conflict it will still schedule the rest of the tasks.
+   * @param tasks ArrayList containing tasks to schedule.
+   * @return success Returns true if all tasks schedules successfully and false if at least one failed.
+   */
+  public boolean scheduleBulkTasks( ArrayList<Task> tasks ) {
+    boolean success = true;
+    for ( Task newTask : tasks ) {
+      if ( scheduleTask( newTask ) == false ) {
+        success = false;
+      }
+    }
+    return success;
+  }
+
+  /**
    * Searches the list of task and returns a Task object if the given taskname is found or throws an exception if not.
    * @param taskName
    * @return Task Returns the task if found.
