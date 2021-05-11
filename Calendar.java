@@ -127,14 +127,24 @@ public class Calendar {
     return tmpFile.writeToFile();
   }
 
+  /**
+   * Generate a full report with all of the tasks
+   * @return Returns a string of table of the full schedule
+   */
   public String generateFullReport() {
-    // TODO: implement report
-    return "FULL REPORT GOES HERE";
+    Report report = new Report(getAllTasks());
+    return report.generateFullSchedule();
   }
 
-  public String generatePartReport() {
-    // TODO: implement report
-    return "PARTIAL REPORT GOES HERE";
+  /**
+   * Generate a partial report with some of the tasks that bound by two different dates or a specific date
+   * @param fromDate The beginning date
+   * @param toDate The ending date
+   * @return Returns a string of table of the partial schedule
+   */
+  public String generatePartReport(int fromDate, int toDate) {
+    Report report = new Report(getAllTasks());
+    return report.generatePartSchedule(fromDate, toDate);
   }
 
   private int getNextDay( int date ) {
