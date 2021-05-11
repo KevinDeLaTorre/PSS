@@ -10,7 +10,7 @@ public class Calendar {
   private DataFile _file;
 
   public Calendar( DataFile file ) {
-    _listOfTasks = new ArrayList<Task>();
+    _listOfTasks = new HashMap<Integer, ArrayList<Task>>();
     _file = file;
   }
 
@@ -39,9 +39,11 @@ public class Calendar {
    */
   public Task getTask( String taskName ) throws TaskNotFoundException {
     // Search list for taskname
-    for ( int i = 0; i < _listOfTasks.size(); i++ ) {
-      if ( _listOfTasks.get( i ).getName() == taskName ) {
-        return _listOfTasks.get( i );
+    for ( int i = 0; i < _listOfTasks.size(); i++ ) { // Search all keys in hash table
+      for ( int j = 0; j < _listOfTasks.get( i ).size(); j++ ) { // Search through arraylist of key
+        if ( _listOfTasks.get( i ).get( j ).getName() == taskName ) {
+          return _listOfTasks.get( i ).get( j );
+        }
       }
     }
     throw new TaskNotFoundException( "Task not found." );
@@ -51,12 +53,31 @@ public class Calendar {
     return false;
   }
 
+  /**
+   * Searches listOfTasks for task and if found deletes it from list
+   * @param taskName Name of task to search
+   * @return Returns true/false depending on if task was successfully deleted or wasn't found.
+   */
   public boolean deleteTask( String taskName ) {
-    return _listOfTasks.remove( getTask( taskName ) );
+    for ( int i = 0; i < _listOfTasks.size(); i++ ) { // Search all keys in hash table
+      for ( int j = 0; j < _listOfTasks.get( i ).size(); j++ ) { // Search through arraylist of key
+        if ( _listOfTasks.get( i ).get( j ).getName() == taskName ) {
+          _listOfTasks.get( i ).remove( _listOfTasks.get( i ).get( j ) ); // If task found delete 
+          return true;
+        }
+      }
+    }
+    return false; // If task not found return false
   }
 
   public ArrayList<Task> getAllTasks() {
-    return _listOfTasks;
+    ArrayList<Task> tmpList = new ArrayList<Task>();
+    for ( int i = 0; i < _listOfTasks.size(); i++ ) {
+      for ( int j = 0; j < _listOfTasks.get( i ).size(); j++ ) {
+        tmpList.add( _listOfTasks.get( i ).get( j ) );
+      }
+    }
+    return tmpList;
   }
 
   public boolean updateFile() {
@@ -83,8 +104,8 @@ public class Calendar {
   }
 
   private void sortList() {
-    for ( int date : _listOfTasks ) {
-      Collections.sort(_listOfTasks.get( date ));
+    for ( int i = 0; i < _listOfTasks.size(); i++ ) {
+      Collections.sort(_listOfTasks.get( i ));
     }
   }
 
