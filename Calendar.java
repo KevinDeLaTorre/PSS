@@ -1,12 +1,12 @@
-import java.util.Collections;
 import java.util.ArrayList;
-
+import java.util.HashMap;
+import java.util.Collections;
 /**
  * Calendar class is in charge of scheduling and managing tasks, it will also update the file after every task change.
  * Because this class has a list of all the tasks it is also in charge of interfacing with the Report class to generate reports.
  */
 public class Calendar {
-  private ArrayList<Task> _listOfTasks;
+  private HashMap<Integer, ArrayList<Task>> _listOfTasks;
   private DataFile _file;
 
   public Calendar( DataFile file ) {
@@ -25,6 +25,9 @@ public class Calendar {
       return false;
     }
 
+      
+
+    sortList();
     return true;
   }
 
@@ -45,6 +48,7 @@ public class Calendar {
   }
 
   public boolean editTask( String taskName ) {
+    return false;
   }
 
   public boolean deleteTask( String taskName ) {
@@ -69,13 +73,19 @@ public class Calendar {
   }
 
   public String generateFullReport() {
-
+    // TODO: implement report
+    return "FULL REPORT GOES HERE";
   }
 
   public String generatePartReport() {
+    // TODO: implement report
+    return "PARTIAL REPORT GOES HERE";
   }
 
   private void sortList() {
+    for ( int date : _listOfTasks ) {
+      Collections.sort(_listOfTasks.get( date ));
+    }
   }
 
   /**
