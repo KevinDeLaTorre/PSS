@@ -4,7 +4,7 @@
 public class Task {
   
   // List of general types of task
-  private final String[] types = {"Class", "Study", "Sleep", "Exercise", "Work", "Meal", "Visit", "Shopping", "Appointment"};
+  private final String[] types = {"Class", "Study", "Sleep", "Exercise", "Work", "Meal", "Visit", "Shopping", "Appointment", "Cancellation"};
 
   private String _taskName;
   private String _type;
@@ -15,54 +15,52 @@ public class Task {
 
   /**
    * Constructor for the Task class
-   * @param taskName
-   * @param type
-   * @param startTime
-   * @param startDate
-   * @param duration
+   * @param task Name the name of task
+   * @param type task type (recurring, transient, or anti)
+   * @param startTime start time of the task
+   * @param startDate date when the task starts
+   * @param duration the duration of task
    */
   public Task( String taskName, String type, double startTime, int startDate, double duration ) throws RestrictionCheckFailedException {
 	  
-	boolean result = checkRestrictions(taskName, startTime, duration, startDate); 
-	if(result == false) {
-		throw new RestrictionCheckFailedException( "Restriction check failed." );
-	}
-	else {
-		_taskName = taskName;
-		_startTime = startTime;
-		_startDate = startDate;
-		_duration = duration;
-	}
+	  boolean result, typeChecked, validateDate;
+		result = checkRestrictions(taskName, startTime, duration, startDate); 
+		typeChecked = checkType(type); 
+		validateDate = checkDate(startDate);
+		
+		if((result == false) && (typeChecked == false) && (validateDate == false)) {
+			throw new RestrictionCheckFailedException( "Restrictions check failed." );
+		}
+		else {
+			_taskName = taskName;
+			_type = type;
+			_startTime = startTime;
+			_startDate = startDate;
+			_duration = duration;
+		}
 
   }
 
   /**
-   * Goes through several different checks to make sure this task is valid for the PSS system.
-   * @return valid  Returns true if the attempted task object passes all restriction checks.
+   * Check whether the input values are valid or invalid
+   * @param taskName name of task
+   * @param startTime start time of task
+   * @param duration duration of task
+   * @param startDate starting date
+   * @return true if the given values are valid, else return false
    */
   public boolean checkRestrictions(String taskName, double startTime, double duration, int startDate) {
-	    // TODO: add task restriction checks if taskName is valid
-		  
+	    
 		// validate startTime 
-		if(startTime >= 0 && startTime <= 23.75) {
-			if((startTime % 0.25) == 0) {
+		if(startTime >= 0 && startTime <= 23.75 && (startTime % 0.25) == 0) {
+			
+			// validate duration
+			if(duration >= 0.25 && duration <= 23.75 && (duration % 0.25) == 0) {
 				return true;
 			}
 		}
-		else 
-			return false;
-		
-		
-		// validate duration
-		if(duration >= 0.25 && duration <= 23.75) {
-			if((duration % 0.25) == 0) {
-				return true;
-			}
-		}
-		else
-			return false;
 		return false;
-	  }
+  }
 
   /**
    * Checks to make sure type input is a valid one.
@@ -79,6 +77,25 @@ public class Task {
       }
     }
     return contains;
+  }
+  
+  /**
+   * Checks if the date has the valid form (YYYYMMDD)
+   * @param date
+   * @return true if the date is correct
+   */
+  public boolean checkDate(int date) {
+	  String d = String.valueOf(date);
+		int[] days_in_month = {31,28,31,30,31,30,31,31,30,31,30,31};
+		if(d.length()==8){
+			  int month = Integer.parseInt(d.substring(4,6)); 
+			  int day = Integer.parseInt(d.substring(6,8));
+			  int numDays = days_in_month[month-1]; 
+			  if(day > 0 && day <= numDays) {
+				  return true;
+			  }
+		}
+		return false;
   }
 
   public String getName() {
