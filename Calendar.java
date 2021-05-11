@@ -11,6 +11,10 @@ public class Calendar {
   private DataFile _file;
   private Set<Integer> _keys;
 
+  /**
+   * Constructor for Calendar
+   * @param file DataFile that we will be writing to.
+   */
   public Calendar( DataFile file ) {
     _listOfTasks = new HashMap<Integer, ArrayList<Task>>();
     _file = file;
@@ -103,6 +107,10 @@ public class Calendar {
     return false; // If task not found return false
   }
 
+  /**
+   * Returns all tasks in the current list of tasks
+   * @return Returns an ArrayList containing all the tasks we have currently.
+   */
   public ArrayList<Task> getAllTasks() {
     ArrayList<Task> tmpList = new ArrayList<Task>();
     for ( int key : _keys ) { // Go through entire hashtable and get an arraylist of all tasks
@@ -114,6 +122,12 @@ public class Calendar {
     return tmpList;
   }
 
+  /**
+   * Returns a partial list of the whole list.
+   * @param startDate Initial start date
+   * @param duration  Length in days of the partial list to get.
+   * @return Returns an ArrayList of the partial list.
+   */
   public ArrayList<Task> getPartTasks( int startDate, int duration ) {
     ArrayList<Task> tmpList = new ArrayList<Task>();
     int date = startDate;
@@ -129,6 +143,10 @@ public class Calendar {
     return tmpList;
   }
 
+  /**
+   * Updates the json file with current list of tasks
+   * @return Returns boolean if it was successful or not.
+   */
   public boolean updateFile() {
     if ( _file.updateTasks( getAllTasks() ) ) {
       return _file.writeToFile();
@@ -163,6 +181,11 @@ public class Calendar {
     return report.generatePartSchedule(fromDate, toDate);
   }
 
+  /**
+   * Returns next valid date when given an integer date
+   * @param date Original date in integer YYYYMMDD format
+   * @return Returns the next valid day after the given date.
+   */
   private int getNextDay( int date ) {
     String tmpString = String.valueOf( date ); // Date should be in format YYYYMMDD
     int year = Integer.parseInt(tmpString.substring(0, 4)); // YYYY
