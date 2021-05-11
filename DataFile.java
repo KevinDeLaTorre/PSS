@@ -36,9 +36,14 @@ public class DataFile {
    * 
    * @param filename JSON file with task data
    */
-  public DataFile(String filename) {
+  public DataFile(String filename, boolean reading ) {
     _filename = filename;
-    readFile();
+    if ( reading ) {
+      readFile();
+    } else {
+      _listOfTasks = new ArrayList<Task>();
+      writeToFile();
+    }
   }
 
   /**
