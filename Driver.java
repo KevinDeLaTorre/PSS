@@ -65,17 +65,19 @@ public class Driver {
         }
         Calendar schedule = new Calendar(user);
 
-        while(answer == 'y') {
+        boolean running = true;
+        while( running ) {
             System.out.println("Menu");
             System.out.println("1. Schedule task");
             System.out.println("2. Edit task");
             System.out.println("3. Delete task");
             System.out.println("4. Generate full report");
+            System.out.println("5. Exit");
 
-            System.out.print("Enter your choice: (1-4) ");
+            System.out.print("Enter your choice: ");
             choice = scan.nextInt();
 
-            if ( choice != 4 ) { // If generating report don't need to ask about kind of task
+            if ( choice < 4 ) { // If generating report don't need to ask about kind of task
                 System.out.println("What kind of task are you using?");
                 System.out.println("a. Task");
                 System.out.println("b. Recurring task");
@@ -294,11 +296,11 @@ public class Driver {
                 case 4:
                     System.out.println( schedule.generateReport() );
                     break;
+                case 5:
+                    System.out.println( "Goodbye" );
+                    running = false;
+                    break;
             }
-
-            System.out.print("Do you want to continue?  (y / n) ");
-            answer = scan.nextChar();
-
         }
         scan.close();
     }    
