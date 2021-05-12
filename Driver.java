@@ -53,7 +53,7 @@ public class Driver {
         System.out.print("Enter your user name: ");
         username = scan.nextLine();
         
-        Datafile user = new Datafile(user + ".json", true);
+        DataFile user = new DataFile(username + ".json", true);
         Calendar schedule = new Calendar(user);
 
         while(answer == 'y') {
