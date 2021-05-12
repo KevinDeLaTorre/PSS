@@ -28,7 +28,7 @@ public class Task implements Comparable<Task> {
 		typeChecked = checkType(type); 
 		validateDate = checkDate(startDate);
 		
-		if((result == false) && (typeChecked == false) && (validateDate == false)) {
+		if((result == false) || (typeChecked == false) || (validateDate == false)) {
 			throw new RestrictionCheckFailedException( "Restrictions check failed." );
 		}
 		else {
