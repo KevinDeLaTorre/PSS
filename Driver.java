@@ -288,5 +288,6 @@ public class Driver {
             choice = scan.nextInt();
 
         }
+        scan.close();
     }    
 }
