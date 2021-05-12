@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.io.File;
 
 public class Driver {
 
@@ -52,8 +53,14 @@ public class Driver {
         
         System.out.print("Enter your user name: ");
         username = scan.nextLine();
-        
-        DataFile user = new DataFile(username + ".json", true);
+        String filename = username + ".json";
+        File file = new File( filename );
+        DataFile user;
+        if ( file.exists() == false ) { // Check if file exists
+            user = new DataFile( filename, false ); // if it doesn't create a blank file using username
+        } else {
+            user = new DataFile( filename, true ); // if it does exist read the file.
+        }
         Calendar schedule = new Calendar(user);
 
         while(answer == 'y') {
