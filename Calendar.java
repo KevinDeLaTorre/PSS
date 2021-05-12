@@ -238,6 +238,25 @@ public class Calendar {
     return Integer.parseInt( tmpString );
   }
 
+  /**
+   * Returns a valid date after a given duration has passed
+   * @param date      Starting date
+   * @param duration   Duration in days
+   * @return          Returns the date after the given duration in days
+   */
+  public int getDayAfterDuration( int date, int duration ) {
+    int tmpDate = date;
+
+    for ( int i = 0; i < duration; i++ ) {
+      tmpDate = getNextDay( tmpDate );
+    }
+
+    return tmpDate;
+  }
+
+  /**
+   * Sorts the hashtable
+   */
   private void sortList() {
     for ( int i = 0; i < _listOfTasks.size(); i++ ) {
       Collections.sort(_listOfTasks.get( i ));
