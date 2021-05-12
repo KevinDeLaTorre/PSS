@@ -17,8 +17,6 @@ public class Driver {
         int frequency;
         double duration;
         
-        // checking if the user name exists
-
         /*
         while(true) {
             
@@ -57,9 +55,13 @@ public class Driver {
         File file = new File( filename );
         DataFile user;
         if ( file.exists() == false ) { // Check if file exists
+            System.out.print( "Creating file..." + filename );
             user = new DataFile( filename, false ); // if it doesn't create a blank file using username
+            System.out.println( " done" );
         } else {
+            System.out.print( "Reading file..." + filename );
             user = new DataFile( filename, true ); // if it does exist read the file.
+            System.out.println( " done" );
         }
         Calendar schedule = new Calendar(user);
 

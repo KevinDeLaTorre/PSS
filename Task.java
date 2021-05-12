@@ -1,16 +1,19 @@
+import java.util.ArrayList;
+
 /**
 * This class is the Super class of all the task types it holds the basic information and methods that all the tasks would need to have.
 */
 public class Task implements Comparable<Task> {
   
   // List of general types of task
-  private final String[] types = {"Class", "Study", "Sleep", "Exercise", "Work", "Meal", "Visit", "Shopping", "Appointment", "Cancellation"};
+  private final String[] typesArray = {"Class", "Study", "Sleep", "Exercise", "Work", "Meal", "Visit", "Shopping", "Appointment", "Cancellation"};
 
   private String _taskName;
   private String _type;
   private double _startTime;
   private int _startDate;
   private double _duration;
+  private ArrayList<String> types = new ArrayList<String>();
 
 
   /**
@@ -24,6 +27,9 @@ public class Task implements Comparable<Task> {
   public Task( String taskName, String type, double startTime, int startDate, double duration ) throws RestrictionCheckFailedException {
 	  
 	  boolean result, typeChecked, validateDate;
+    for ( String t : typesArray ) {
+      types.add( t );
+    }
 		result = checkRestrictions(taskName, startTime, duration, startDate); 
 		typeChecked = checkType(type); 
 		validateDate = checkDate(startDate);
@@ -69,14 +75,7 @@ public class Task implements Comparable<Task> {
    */
   public boolean checkType( String type ) {
     // Checks to make sure a valid type is given, makes the type "Error" if not
-    boolean contains = false;
-    for ( int i = 0; i < types.length; i++ ) {
-      if ( type == types[i] ) {
-        contains = true;
-        break;
-      }
-    }
-    return contains;
+    return types.contains( type );
   }
   
   /**

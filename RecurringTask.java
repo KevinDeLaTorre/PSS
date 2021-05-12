@@ -1,16 +1,21 @@
-
+import java.util.ArrayList;
 public class RecurringTask extends Task{
 	
 	// resurring task types
-	private final String[] types = { "Class", "Study", "Sleep", "Exercise", "Work", "Meal" };
+	private final String[] typesArray = { "Class", "Study", "Sleep", "Exercise", "Work", "Meal" };
 	
 	private int _endDate;
 	private int _frequency;
-	
+  private ArrayList<String> types = new ArrayList<String>();
+
 	public RecurringTask(String taskName, String type, double startTime, int startDate, double duration, int eDate, int freq) throws RestrictionCheckFailedException {
 		super(taskName, type, startTime, startDate, duration);
+
+		for ( String t : typesArray ) {
+			types.add( t );
+		}
 		boolean valid = checkRestrictions(super.getStartDate(), eDate, freq); // check date and frequency
-		boolean recurringType = checkType(type); // check task type is recurring
+		boolean recurringType = checkThisType(type); // check task type is recurring
 		
 		if((valid == false) && (recurringType == false)) {
 			throw new RestrictionCheckFailedException("Restriction check failed.");
@@ -64,21 +69,14 @@ public class RecurringTask extends Task{
 	    return false;
 	}
 	
-	/**
-	   * Checks to make sure type input is a valid one.
-	   * @param type  Type of task to check i.e. Class, Study, Sleep...
-	   * @return contains Returns true if type is valid
-	   */
-	  public boolean checkType( String type ) {
-	    // Checks to make sure a valid type is given, makes the type "Error" if not
-	    boolean contains = false;
-	    for ( int i = 0; i < types.length; i++ ) {
-	      if ( type == types[i] ) {
-	        contains = true;
-	        break;
-	      }
-	    }
-	    return contains;
+/**
+	 * Checks to make sure type input is a valid one.
+	 * @param type  Type of task to check i.e. Class, Study, Sleep...
+	 * @return contains Returns true if type is valid
+	 */
+	public boolean checkThisType( String type ) {
+		// Checks to make sure a valid type is given, makes the type "Error" if not
+		return types.contains( type );
 	}
 
 	public int getEndDate() {
