@@ -297,7 +297,7 @@ public class Driver {
             }
 
             System.out.print("Do you want to continue?  (y / n) ");
-            choice = scan.nextInt();
+            answer = scan.nextChar();
 
         }
         scan.close();

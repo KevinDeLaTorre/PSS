@@ -19,6 +19,7 @@ public class Calendar {
     _listOfTasks = new HashMap<Integer, ArrayList<Task>>();
     _file = file;
     _keys = _listOfTasks.keySet();
+    scheduleBulkTasks( file.getTaskList() );
   }
 
   /**
@@ -29,13 +30,14 @@ public class Calendar {
   public boolean scheduleTask( Task newTask ) {
     // Check for name uniqueness
     try {
-      getTask( newTask.getName() );
-      return false; // If getTask doesn't throw an error it means a task was found therefore newTask is not unique so return false.
+      getTask( newTask.getName() ); 
+      return false; // If getTask succeeds and doesn't throw TaskNotFoundException then a task exists with that name
     } catch ( TaskNotFoundException e ) {}
 
     // If first time adding to date, create key in table
-    if ( !_keys.contains(newTask.getStartDate() ) ) { 
+    if ( _keys.contains( newTask.getStartDate() ) == false ) { 
       _listOfTasks.put( newTask.getStartDate(), new ArrayList<Task>() );
+      _keys = _listOfTasks.keySet(); // Update keys
     }
 
     // TODO: Check if time overlap
@@ -43,7 +45,6 @@ public class Calendar {
 
     _listOfTasks.get( newTask.getStartDate() ).add( newTask ); // Add task to listOfTasks
     Collections.sort(_listOfTasks.get( newTask.getStartDate())); // Sort arraylist by date/time after adding new task in
-    _keys = _listOfTasks.keySet(); // Update _keys
     return true;
   }
 
@@ -69,11 +70,16 @@ public class Calendar {
    * @throws TaskNotFoundException
    */
   public Task getTask( String taskName ) throws TaskNotFoundException {
+    if ( taskName == null ) {
+      System.out.println( "Name null " );
+    }
     // Search list for taskname
-    for ( int key : _keys ) { // Search all keys in hash table
-      for ( int j = 0; j < _listOfTasks.get( key ).size(); j++ ) { // Search through arraylist of key
-        if ( _listOfTasks.get( key ).get( j ).getName() == taskName ) { // If taskname is found return task
-          return _listOfTasks.get( key ).get( j );
+    if ( _listOfTasks.size() != 0 ) {
+      for ( int key : _keys ) { // Search all keys in hash table
+        for ( int j = 0; j < _listOfTasks.get( key ).size(); j++ ) { // Search through arraylist of key
+          if ( _listOfTasks.get( key ).get( j ).getName() == taskName ) { // If taskname is found return task
+            return _listOfTasks.get( key ).get( j );
+          }
         }
       }
     }
