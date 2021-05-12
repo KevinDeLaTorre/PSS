@@ -17,7 +17,7 @@ public class AntiTask extends Task {
 	 */
 	public boolean checkRestrictions(String type)
 	{
-		boolean antiType = checkType(type); 
+		boolean antiType = checkThisType(type); 
 		if (antiType == true)
 			return true; 
 		return false;
@@ -28,7 +28,7 @@ public class AntiTask extends Task {
 	   * @param type  Type of task to check i.e. Class, Study, Sleep...
 	   * @return contains Returns true if type is valid
 	   */
-	  public boolean checkType( String type ) {
+	  public boolean checkThisType( String type ) {
 	    // Checks to make sure a valid type is given, makes the type "Error" if not
 	    boolean contains = false;
 	    for ( int i = 0; i < types.length; i++ ) {
