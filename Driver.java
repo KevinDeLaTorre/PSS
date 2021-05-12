@@ -73,14 +73,17 @@ public class Driver {
             System.out.print("Enter your choice: (1-4) ");
             choice = scan.nextInt();
 
-            System.out.println("What kind of task are you using?");
-            System.out.println("a. Task");
-            System.out.println("b. Recurring task");
-            System.out.println("c. Transient task");
-            System.out.println("d. Anti task");
+            if ( choice != 4 ) { // If generating report don't need to ask about kind of task
+                System.out.println("What kind of task are you using?");
+                System.out.println("a. Task");
+                System.out.println("b. Recurring task");
+                System.out.println("c. Transient task");
+                System.out.println("d. Anti task");
 
-            System.out.println("Enter your choice: (a-d) ");
-            answer = scan.next().charAt(0);
+                System.out.println("Enter your choice: (a-d) ");
+                answer = scan.next().charAt(0);
+                scan.nextLine();
+            }
 
             switch(choice) {
                 case 1:
@@ -92,10 +95,10 @@ public class Driver {
                             type = "Task";
                             System.out.print("What is the start time?");
                             startTime = scan.nextDouble();
-                            System.out.print("What is the start date? ");
+                            System.out.print("What is the start date (YYYYMMDD)? ");
                             startDate = scan.nextInt();
                             System.out.print("What is the duration of the task? ");
-                            duration = scan.nextInt();
+                            duration = scan.nextDouble();
                             Task t = new Task(taskName, type, startTime, startDate, duration);
                             schedule.scheduleTask(t);
 
@@ -107,12 +110,12 @@ public class Driver {
                             type = " Recurring Task";
                             System.out.print("What is the start time?");
                             startTime = scan.nextDouble();
-                            System.out.print("What is the start date? ");
+                            System.out.print("What is the start date (YYYYMMDD)? ");
                             startDate = scan.nextInt();
                             System.out.print("What is the end date? ");
                             endDate = scan.nextInt();
                             System.out.print("What is the duration of the task? ");
-                            duration = scan.nextInt();
+                            duration = scan.nextDouble();
                             System.out.print("Enter the frequency: ");
                             frequency = scan.nextInt();
                             RecurringTask r = new RecurringTask(taskName, type, startTime, startDate, duration, endDate, frequency);
@@ -122,13 +125,13 @@ public class Driver {
                         case 'c':
                             System.out.print("What is the task name you are scheduling? ");
                             taskName = scan.nextLine();
-                            type = "Transient Task";
+                            type = "Shopping";
                             System.out.print("What is the start time?");
                             startTime = scan.nextDouble();
-                            System.out.print("What is the start date? ");
+                            System.out.print("What is the start date (YYYYMMDD)? ");
                             startDate = scan.nextInt();
                             System.out.print("What is the duration of the task? ");
-                            duration = scan.nextInt();
+                            duration = scan.nextDouble();
                             TransientTask tr = new TransientTask(taskName, type, startTime, startDate, duration);
                             schedule.scheduleTask(tr);
 
@@ -139,10 +142,10 @@ public class Driver {
                             type = "Anti Task";
                             System.out.print("What is the start time?");
                             startTime = scan.nextDouble();
-                            System.out.print("What is the start date? ");
+                            System.out.print("What is the start date (YYYYMMDD)? ");
                             startDate = scan.nextInt();
                             System.out.print("What is the duration of the task? ");
-                            duration = scan.nextInt();
+                            duration = scan.nextDouble();
                             AntiTask a = new AntiTask(taskName, type, startTime, startDate, duration);
                             schedule.scheduleTask(a);
 
@@ -287,7 +290,7 @@ public class Driver {
                     break;
 
                 case 4:
-                    schedule.generateReport();
+                    System.out.println( schedule.generateReport() );
                     break;
             }
 
