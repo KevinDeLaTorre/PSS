@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Collections;
 import java.util.Set;
+
 /**
  * Calendar class is in charge of scheduling and managing tasks, it will also update the file after every task change.
  * Because this class has a list of all the tasks it is also in charge of interfacing with the Report class to generate reports.
@@ -29,10 +30,17 @@ public class Calendar {
    */
   public boolean scheduleTask( Task newTask ) {
     // Check for name uniqueness
-    try {
-      getTask( newTask.getName() ); 
-      return false; // If getTask succeeds and doesn't throw TaskNotFoundException then a task exists with that name
-    } catch ( TaskNotFoundException e ) {}
+    if ( !newTask.isRecurringTask() ) {
+      try {
+        getTask( newTask.getName() ); 
+        return false; // If getTask succeeds and doesn't throw TaskNotFoundException then a task exists with that name
+      } catch ( TaskNotFoundException e ) {}
+    }
+
+    // Check for time overlap
+    if ( checkConflict( newTask ) ) {
+      return false; // If conflict is found return false
+    }
 
     // If first time adding to date, create key in table
     if ( _keys.contains( newTask.getStartDate() ) == false ) { 
@@ -40,12 +48,52 @@ public class Calendar {
       _keys = _listOfTasks.keySet(); // Update keys
     }
 
-    // TODO: Check if time overlap
-    
-
     _listOfTasks.get( newTask.getStartDate() ).add( newTask ); // Add task to listOfTasks
     Collections.sort(_listOfTasks.get( newTask.getStartDate())); // Sort arraylist by date/time after adding new task in
+
+    if ( newTask.isRecurringTask() ) {
+      RecurringTask tmpTask = (RecurringTask) newTask;
+      int nextday = getDayAfterDuration( tmpTask.getStartDate(), tmpTask.getFrequency() );
+      if ( nextday <= tmpTask.getEndDate() ) { // If next recurring task day is valid schedule the next one
+        RecurringTask nextTask = new RecurringTask(
+          tmpTask.getName(), 
+          tmpTask.getType(), 
+          tmpTask.getStartTime(), 
+          nextday, 
+          tmpTask.getDuration(), 
+          tmpTask.getEndDate(), 
+          tmpTask.getFrequency() );
+        scheduleTask( nextTask );
+      }
+    }
     return true;
+  }
+
+  /**
+   * Checks if there's a conflict with given task.
+   * @param task Task to check
+   * @return Returns true if there is a conflict and false if there isn't
+   */
+  private boolean checkConflict( Task task ) {
+    int key = task.getStartDate();
+    if ( _keys.contains( key ) ) {
+      double taskStart = task.getStartTime();
+      double taskEnd = ( taskStart + task.getDuration() );
+      for ( int i = 0; i < _listOfTasks.get( key ).size(); i++ ) {
+        Task tmpTask = _listOfTasks.get( key ).get( i );
+        double tmpTaskStart = tmpTask.getStartTime();
+        double tmpTaskEnd = ( tmpTaskStart + tmpTask.getDuration() );
+        // Check if newtask startTime is within timeslot of other task
+        if ( taskStart >= tmpTaskStart && taskStart < tmpTaskEnd ) {
+          return true;
+        } else if ( taskEnd >= tmpTaskStart && taskEnd <= tmpTaskEnd ) { // Check if newtask endTime is within timeslot of other task
+          return true;
+        } else if ( taskStart < tmpTaskStart && taskEnd > tmpTaskEnd ) { // Check if other task is within newtask timeslot
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   /**
