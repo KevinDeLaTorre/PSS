@@ -3,6 +3,7 @@ public class RecurringTask extends Task{
 	
 	// resurring task types
 	private final String[] typesArray = { "Class", "Study", "Sleep", "Exercise", "Work", "Meal" };
+	private final String TASKTYPE = "RECURRING";
 	
 	private int _endDate;
 	private int _frequency;

@@ -2,6 +2,7 @@
 public class TransientTask extends Task {
 	// transient task types
 	private final String[] types = {"Visit", "Shopping", "Appointment"};
+	private final String TASKTYPE = "TRANSIENT";
 	
 	public TransientTask(String taskName, String type, double startTime, int startDate, double duration) throws RestrictionCheckFailedException {
 		super(taskName, type, startTime, startDate, duration);

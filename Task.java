@@ -7,6 +7,7 @@ public class Task implements Comparable<Task> {
   
   // List of general types of task
   private final String[] typesArray = {"Class", "Study", "Sleep", "Exercise", "Work", "Meal", "Visit", "Shopping", "Appointment", "Cancellation"};
+  private final String TASKTYPE = "TASK";
 
   private String _taskName;
   private String _type;
@@ -124,6 +125,10 @@ public class Task implements Comparable<Task> {
    */
   public int compareTo( Task otherTask ) {
     return Double.compare((_startDate+_startTime), (otherTask._startDate+otherTask._startTime) );
+  }
+
+  public String getTaskType() {
+    return TASKTYPE;
   }
 
   /**

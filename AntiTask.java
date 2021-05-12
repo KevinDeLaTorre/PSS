@@ -1,6 +1,7 @@
 
 public class AntiTask extends Task {
 	private final String[] types = {"Cancellation"}; // only task type
+	private final String TASKTYPE = "ANTI";
 	
 	public AntiTask(String taskName, String type, double startTime, int startDate, double duration) throws RestrictionCheckFailedException {
 		super(taskName, type, startTime, startDate, duration);
