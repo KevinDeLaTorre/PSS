@@ -17,38 +17,6 @@ public class Driver {
         int frequency;
         double duration;
         
-        /*
-        while(true) {
-            
-            System.out.print("Enter your user name: ");
-            username = scan.nextLine();
-
-
-            User user = new User(username + ".json");
-            // if username is not in the file
-            // ask if you want to add the username 
-            // to the file, otherwise exit
-
-            if (username != User.getFileName()) { //== username) {
-                System.out.println("The user name you entered is not in the system.");
-                System.out.print("Do you want to add \"" + username + "\" to your file? (y / n) ");
-                answer = scan.next().charAt(0);
-
-                if(answer == 'y') {
-                    // add to the file
-                    
-                    Datafile newFile = new DataFile(username, true);
-                    Calendar newCalender = new Calendar(newFile);
-                    break;
-                } 
-
-                
-            }
-            Datafile newFile = new DataFile(username, true);
-            Calendar newCalender = new Calendar(newFile);
-        }
-        */
-        
         System.out.print("Enter your user name: ");
         username = scan.nextLine();
         String filename = username + ".json";
@@ -96,7 +64,9 @@ public class Driver {
                         case 'a':
                             System.out.print("What is the task name you are scheduling? ");
                             taskName = scan.nextLine();
-                            type = "Task";
+                            printTypes();
+                            System.out.print("What type of task are you scheduling? ");
+                            type = scan.nextLine();
                             System.out.print("What is the start time?");
                             startTime = scan.nextDouble();
                             System.out.print("What is the start date (YYYYMMDD)? ");
@@ -111,7 +81,9 @@ public class Driver {
                         case 'b':
                             System.out.print("What is the task name you are scheduling? ");
                             taskName = scan.nextLine();
-                            type = " Recurring Task";
+                            printRTypes();
+                            System.out.print("What type of task are you scheduling? ");
+                            type = scan.nextLine();
                             System.out.print("What is the start time?");
                             startTime = scan.nextDouble();
                             System.out.print("What is the start date (YYYYMMDD)? ");
@@ -129,7 +101,9 @@ public class Driver {
                         case 'c':
                             System.out.print("What is the task name you are scheduling? ");
                             taskName = scan.nextLine();
-                            type = "Shopping";
+                            printTTypes();
+                            System.out.print("What type of task are you scheduling? ");
+                            type = scan.nextLine();
                             System.out.print("What is the start time?");
                             startTime = scan.nextDouble();
                             System.out.print("What is the start date (YYYYMMDD)? ");
@@ -143,7 +117,7 @@ public class Driver {
                         case 'd':
                              System.out.print("What is the task name you are scheduling? ");
                             taskName = scan.nextLine();
-                            type = "Anti Task";
+                            type = "Cancellation";
                             System.out.print("What is the start time?");
                             startTime = scan.nextDouble();
                             System.out.print("What is the start date (YYYYMMDD)? ");
@@ -163,7 +137,9 @@ public class Driver {
                         case 'a':
                             System.out.print("What is the task name you are scheduling? ");
                             taskName = scan.nextLine();
-                            type = "Task";
+                            printTypes();
+                            System.out.print("What type of task are you scheduling? ");
+                            type = scan.nextLine();
                             System.out.print("What is the start time?");
                             startTime = scan.nextDouble();
                             System.out.print("What is the start date? ");
@@ -178,7 +154,9 @@ public class Driver {
                         case 'b':
                             System.out.print("What is the task name you are scheduling? ");
                             taskName = scan.nextLine();
-                            type = " Recurring Task";
+                            printRTypes();
+                            System.out.print("What type of task are you scheduling? ");
+                            type = scan.nextLine();
                             System.out.print("What is the start time?");
                             startTime = scan.nextDouble();
                             System.out.print("What is the start date? ");
@@ -196,7 +174,9 @@ public class Driver {
                         case 'c':
                             System.out.print("What is the task name you are scheduling? ");
                             taskName = scan.nextLine();
-                            type = "Transient Task";
+                            printTTypes();
+                            System.out.print("What type of task are you scheduling? ");
+                            type = scan.nextLine();
                             System.out.print("What is the start time?");
                             startTime = scan.nextDouble();
                             System.out.print("What is the start date? ");
@@ -210,7 +190,7 @@ public class Driver {
                         case 'd':
                              System.out.print("What is the task name you are scheduling? ");
                             taskName = scan.nextLine();
-                            type = "Anti Task";
+                            type = "Cancellation";
                             System.out.print("What is the start time?");
                             startTime = scan.nextDouble();
                             System.out.print("What is the start date? ");
@@ -231,7 +211,9 @@ public class Driver {
                         case 'a':
                             System.out.print("What is the task name you are scheduling? ");
                             taskName = scan.nextLine();
-                            type = "Task";
+                            printTypes();
+                            System.out.print("What type of task are you scheduling? ");
+                            type = scan.nextLine();
                             System.out.print("What is the start time?");
                             startTime = scan.nextDouble();
                             System.out.print("What is the start date? ");
@@ -246,7 +228,9 @@ public class Driver {
                         case 'b':
                             System.out.print("What is the task name you are scheduling? ");
                             taskName = scan.nextLine();
-                            type = " Recurring Task";
+                            printRTypes();
+                            System.out.print("What type of task are you scheduling? ");
+                            type = scan.nextLine();
                             System.out.print("What is the start time?");
                             startTime = scan.nextDouble();
                             System.out.print("What is the start date? ");
@@ -264,7 +248,9 @@ public class Driver {
                         case 'c':
                             System.out.print("What is the task name you are scheduling? ");
                             taskName = scan.nextLine();
-                            type = "Transient Task";
+                            printTTypes();
+                            System.out.print("What type of task are you scheduling? ");
+                            type = scan.nextLine();
                             System.out.print("What is the start time?");
                             startTime = scan.nextDouble();
                             System.out.print("What is the start date? ");
@@ -278,7 +264,7 @@ public class Driver {
                         case 'd':
                              System.out.print("What is the task name you are scheduling? ");
                             taskName = scan.nextLine();
-                            type = "Anti Task";
+                            type = "Cancellation";
                             System.out.print("What is the start time?");
                             startTime = scan.nextDouble();
                             System.out.print("What is the start date? ");
@@ -304,4 +290,48 @@ public class Driver {
         }
         scan.close();
     }    
+
+    // Tasks types
+
+    void printTypes() {
+        System.out.println("");
+        System.out.println("Types of tasks");
+        System.out.println("Class");
+        System.out.println("Study");
+        System.out.println("Sleep");
+        System.out.println("Exercise");
+        System.out.println("Work");
+        System.out.println("Meals");
+        System.out.println("Visit");
+        System.out.println("Shopping");
+        System.out.println("Appointment");
+        System.out.println("Cancellation");
+        System.out.println("");
+    }
+
+    // Recurring tasks types
+
+    void printRTypes(){
+        System.out.println("");
+        System.out.println("Types of recurring tasks");
+        System.out.println("Class");
+        System.out.println("Study");
+        System.out.println("Sleep");
+        System.out.println("Exercise");
+        System.out.println("Work");
+        System.out.println("Meals");
+        System.out.println("");
+    }
+    
+    // Transient tasks types
+
+    void printTTypes() {
+        System.out.println("");
+        System.out.println("Types of transient tasks");
+        System.out.println("Visit");
+        System.out.println("Shopping");
+        System.out.println("Appointment");
+        System.out.println("");
+    }
+
 }
