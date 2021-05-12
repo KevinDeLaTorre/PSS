@@ -35,8 +35,12 @@ public class Task implements Comparable<Task> {
 		typeChecked = checkType(type); 
 		validateDate = checkDate(startDate);
 		
-		if((result == false) || (typeChecked == false) || (validateDate == false)) {
+		if(result == false) {
 			throw new RestrictionCheckFailedException( "Restrictions check failed." );
+    } else if (typeChecked == false) {
+			throw new RestrictionCheckFailedException( "Type check failed." );
+    } else if (validateDate == false) {
+			throw new RestrictionCheckFailedException( "Date invalid." );
 		}
 		else {
 			_taskName = taskName;
@@ -45,7 +49,6 @@ public class Task implements Comparable<Task> {
 			_startDate = startDate;
 			_duration = duration;
 		}
-
   }
 
   /**
@@ -124,7 +127,7 @@ public class Task implements Comparable<Task> {
    * @return 
    */
   public int compareTo( Task otherTask ) {
-    return Double.compare((_startDate+_startTime), (otherTask._startDate+otherTask._startTime) );
+    return Double.compare((_startDate+(_startTime/100)), (otherTask._startDate+(otherTask._startTime/100) ) );
   }
 
   public String getTaskType() {
