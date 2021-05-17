@@ -293,7 +293,7 @@ public class Driver {
 
     // Tasks types
 
-    void printTypes() {
+    static void printTypes() {
         System.out.println("");
         System.out.println("Types of tasks");
         System.out.println("Class");
@@ -311,7 +311,7 @@ public class Driver {
 
     // Recurring tasks types
 
-    void printRTypes(){
+    static void printRTypes(){
         System.out.println("");
         System.out.println("Types of recurring tasks");
         System.out.println("Class");
@@ -325,7 +325,7 @@ public class Driver {
     
     // Transient tasks types
 
-    void printTTypes() {
+    static void printTTypes() {
         System.out.println("");
         System.out.println("Types of transient tasks");
         System.out.println("Visit");
