@@ -66,6 +66,7 @@ public class Calendar {
         scheduleTask( nextTask );
       }
     }
+    updateFile();
     return true;
   }
 
@@ -251,6 +252,7 @@ public class Calendar {
 
     if ( month == 12 && day == 31 ) { // In case of a new years switch reset month and day to 1 and increase year by 1
       tmpString += String.valueOf(year+1) + "0101";
+      return Integer.parseInt( tmpString );
     } else if ( month == 2 && day == 28 ) { // If february and last day change month at 28
       changeMonth = true;
     } else if ( day == 30 && ( month == 4 || month == 6 || month == 9 || month == 11 ) ) { // If in last day of 30 day month change month
