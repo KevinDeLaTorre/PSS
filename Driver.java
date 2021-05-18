@@ -67,14 +67,16 @@ public class Driver {
                             printTypes();
                             System.out.print("What type of task are you scheduling? ");
                             type = scan.nextLine();
-                            System.out.print("What is the start time?");
+                            System.out.print("What is the start time? ");
                             startTime = scan.nextDouble();
                             System.out.print("What is the start date (YYYYMMDD)? ");
                             startDate = scan.nextInt();
                             System.out.print("What is the duration of the task? ");
                             duration = scan.nextDouble();
                             Task t = new Task(taskName, type, startTime, startDate, duration);
-                            schedule.scheduleTask(t);
+                            if ( !schedule.scheduleTask(t) ) {
+                                System.out.println( "Task conflicted with schedule, was NOT added." );
+                            }
 
                             break;
 
@@ -84,15 +86,18 @@ public class Driver {
                             printRTypes();
                             System.out.print("What type of task are you scheduling? ");
                             type = scan.nextLine();
-                            System.out.print("What is the start time?");
+                            System.out.print("What is the start time? ");
                             startTime = scan.nextDouble();
                             System.out.print("What is the start date (YYYYMMDD)? ");
                             startDate = scan.nextInt();
+                            scan.nextLine(); // Flush the scanner of the \n
                             System.out.print("What is the end date? ");
                             endDate = scan.nextInt();
+                            scan.nextLine();
                             System.out.print("What is the duration of the task? ");
                             duration = scan.nextDouble();
                             System.out.print("Enter the frequency: ");
+                            scan.nextLine();
                             frequency = scan.nextInt();
                             RecurringTask r = new RecurringTask(taskName, type, startTime, startDate, duration, endDate, frequency);
                             schedule.scheduleTask(r);
@@ -104,7 +109,7 @@ public class Driver {
                             printTTypes();
                             System.out.print("What type of task are you scheduling? ");
                             type = scan.nextLine();
-                            System.out.print("What is the start time?");
+                            System.out.print("What is the start time? ");
                             startTime = scan.nextDouble();
                             System.out.print("What is the start date (YYYYMMDD)? ");
                             startDate = scan.nextInt();
@@ -118,7 +123,7 @@ public class Driver {
                              System.out.print("What is the task name you are scheduling? ");
                             taskName = scan.nextLine();
                             type = "Cancellation";
-                            System.out.print("What is the start time?");
+                            System.out.print("What is the start time? ");
                             startTime = scan.nextDouble();
                             System.out.print("What is the start date (YYYYMMDD)? ");
                             startDate = scan.nextInt();
@@ -301,7 +306,7 @@ public class Driver {
         System.out.println("Sleep");
         System.out.println("Exercise");
         System.out.println("Work");
-        System.out.println("Meals");
+        System.out.println("Meal");
         System.out.println("Visit");
         System.out.println("Shopping");
         System.out.println("Appointment");
