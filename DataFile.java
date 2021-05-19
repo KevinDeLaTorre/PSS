@@ -116,7 +116,11 @@ public class DataFile {
         }
         else {
           int date = Integer.parseInt((String) jsonObj.get("Date"));
-          task = new Task(name, type, startTime, date, duration);
+          if ( type.equals( "Cancellation" ) ) {
+            task = new AntiTask(name, type, startTime, date, duration );
+          } else {
+            task = new Task(name, type, startTime, date, duration);
+          }
         }
         taskList.add(task);
       }
