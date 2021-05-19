@@ -126,7 +126,7 @@ public class Calendar {
     if ( _listOfTasks.size() != 0 ) {
       for ( int key : _keys ) { // Search all keys in hash table
         for ( int j = 0; j < _listOfTasks.get( key ).size(); j++ ) { // Search through arraylist of key
-          if ( _listOfTasks.get( key ).get( j ).getName() == taskName ) { // If taskname is found return task
+          if ( _listOfTasks.get( key ).get( j ).getName().equals( taskName ) ) { // If taskname is found return task
             return _listOfTasks.get( key ).get( j );
           }
         }
@@ -153,12 +153,19 @@ public class Calendar {
   public boolean deleteTask( String taskName ) {
     for ( int key : _keys ) { // Search all keys in listOfTasks
       for ( int j = 0; j < _listOfTasks.get( key ).size(); j++ ) { // Search through arraylist of key
-        if ( _listOfTasks.get( key ).get( j ).getName() == taskName ) {
+        System.out.println( _listOfTasks.get( key ).get( j ).getName() );
+        if ( _listOfTasks.get( key ).get( j ).getName().equals( taskName ) ) {
+          boolean isRecurringTask = _listOfTasks.get( key ).get( j ).isRecurringTask();
           _listOfTasks.get( key ).remove( _listOfTasks.get( key ).get( j ) ); // If task found delete 
+          if ( isRecurringTask ) {
+            deleteTask( taskName );
+          }
+          System.out.println( "Task '" + taskName + "' successfully deleted.");
           return true;
         }
       }
     }
+    updateFile();
     return false; // If task not found return false
   }
 
