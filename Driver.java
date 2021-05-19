@@ -73,10 +73,14 @@ public class Driver {
                             startDate = scan.nextInt();
                             System.out.print("What is the duration of the task? ");
                             duration = scan.nextDouble();
-                            Task t = new Task(taskName, type, startTime, startDate, duration);
-                            if ( !schedule.scheduleTask(t) ) {
-                                System.out.println( "Task conflicted with schedule, was NOT added." );
-                            }
+                            try {
+                                Task t = new Task(taskName, type, startTime, startDate, duration);
+                                if ( !schedule.scheduleTask(t) ) {
+                                    System.out.println( "Task conflicted with schedule, was NOT added." );
+                                }
+                            } catch ( RestrictionCheckFailedException e ) {
+                                System.out.println( "Invalid task entered, will not be added to schedule." );
+                            }   
 
                             break;
 
@@ -97,8 +101,14 @@ public class Driver {
                             System.out.print("Enter the frequency: ");
                             scan.nextLine();
                             frequency = scan.nextInt();
-                            RecurringTask r = new RecurringTask(taskName, type, startTime, startDate, duration, endDate, frequency);
-                            schedule.scheduleTask(r);
+                            try {
+                                RecurringTask r = new RecurringTask(taskName, type, startTime, startDate, duration, endDate, frequency);
+                                if ( !schedule.scheduleTask(r) ) {
+                                    System.out.println( "Task conflicted with schedule, was NOT added." );
+                                }
+                            } catch ( RestrictionCheckFailedException e ) {
+                                System.out.println( "Invalid task entered, will not be added to schedule." );
+                            }
 
                             break;
                         case 'c':
@@ -111,8 +121,14 @@ public class Driver {
                             startDate = scan.nextInt();
                             System.out.print("What is the duration of the task? ");
                             duration = scan.nextDouble();
-                            TransientTask tr = new TransientTask(taskName, type, startTime, startDate, duration);
-                            schedule.scheduleTask(tr);
+                            try {
+                                TransientTask tr = new TransientTask(taskName, type, startTime, startDate, duration);
+                                if ( !schedule.scheduleTask(tr) ) {
+                                    System.out.println( "Task conflicted with schedule, was NOT added." );
+                                }
+                            } catch ( RestrictionCheckFailedException e ) {
+                                System.out.println( "Invalid task entered, will not be added to schedule." );
+                            }
                             break;
                         case 'd':
                             type = "Cancellation";
@@ -122,8 +138,14 @@ public class Driver {
                             startDate = scan.nextInt();
                             System.out.print("What is the duration of the task? ");
                             duration = scan.nextDouble();
-                            AntiTask a = new AntiTask(taskName, type, startTime, startDate, duration);
-                            schedule.scheduleTask(a);
+                            try {
+                                AntiTask a = new AntiTask(taskName, type, startTime, startDate, duration);
+                                if ( !schedule.scheduleTask(a) ) {
+                                    System.out.println( "Task conflicted with schedule, was NOT added." );
+                                }
+                            } catch ( RestrictionCheckFailedException e ) {
+                                System.out.println( "Invalid task entered, will not be added to schedule." );
+                            }
                             break;
                     }
                     break;
