@@ -19,18 +19,16 @@ public class Driver {
         
         System.out.print("Enter your user name(or name of file you'd like to use): ");
         username = scan.nextLine();
-        String readFilename = username + ".json";
         String filename = username + "-db.json";
         File file = new File( filename );
         DataFile user;
         if ( file.exists() == false ) { // Check if file exists
             System.out.print( "Creating file..." + filename );
-            user = new DataFile( filename, true );
+            user = new DataFile( filename, false );
             System.out.println( " done" );
         } else {
-            System.out.print( "Reading file..." + filename );
-            user = new DataFile( readFilename, true ); // if it does exist read the file.
-            user.setFilename( filename );
+            System.out.print( "Reading file...( " + filename + " )" );
+            user = new DataFile( filename, true ); // if it does exist read the file.
             System.out.println( " done" );
         }
         Calendar schedule = new Calendar(user);
@@ -38,6 +36,7 @@ public class Driver {
         boolean running = true;
         while( running ) {
             System.out.println("Menu");
+            System.out.println("0. Read tasks from file" );
             System.out.println("1. Schedule task");
             System.out.println("2. Edit task");
             System.out.println("3. Delete task");
@@ -47,7 +46,7 @@ public class Driver {
             System.out.print("Enter your choice: ");
             choice = scan.nextInt();
 
-            if ( choice < 2 ) { // If generating report don't need to ask about kind of task
+            if ( choice > 0 && choice < 2 ) { // If generating report don't need to ask about kind of task
                 System.out.println("What kind of task do you want to schedule?");
                 System.out.println("a. Task");
                 System.out.println("b. Recurring task");
@@ -60,6 +59,17 @@ public class Driver {
             scan.nextLine(); // Clear scanner buffer
 
             switch(choice) {
+                case 0:
+                    System.out.print( "Enter filename: " );
+                    String readFilename = scan.nextLine();
+                    File tmpFile = new File( readFilename );
+                    if ( !tmpFile.exists() ) {
+                        System.out.println( "File not found." );
+                    } else {
+                        DataFile tmpDataFile = new DataFile( readFilename, true );
+                        schedule.scheduleBulkTasks( tmpDataFile.getTaskList() );
+                    }
+                    break;
                 case 1:
                     System.out.println("\n| SCHEDULE A TASK |");
                     System.out.print("What is the name of the task you want to schedule? ");
