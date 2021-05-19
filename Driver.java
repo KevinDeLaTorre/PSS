@@ -25,11 +25,12 @@ public class Driver {
         DataFile user;
         if ( file.exists() == false ) { // Check if file exists
             System.out.print( "Creating file..." + filename );
-            user = new DataFile( readFilename, false ); // if it doesn't create a blank file using username
+            user = new DataFile( filename, true );
             System.out.println( " done" );
         } else {
             System.out.print( "Reading file..." + filename );
-            user = new DataFile( filename, true ); // if it does exist read the file.
+            user = new DataFile( readFilename, true ); // if it does exist read the file.
+            user.setFilename( filename );
             System.out.println( " done" );
         }
         Calendar schedule = new Calendar(user);
