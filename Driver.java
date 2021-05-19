@@ -218,7 +218,7 @@ public class Driver {
                     System.out.println("\n| DELETE A TASK |");
                     System.out.print("What is the name of the task you want to delete (case-sensitive)? ");
                     taskName = scan.nextLine();
-                    if (schedule.deleteTask( taskName )) {
+                    if (schedule.deleteTask( taskName, false )) {
                         System.out.println( "Successfully deleted task(s)." );
                     } else {
                         System.out.println( "Failed to delete task." );
