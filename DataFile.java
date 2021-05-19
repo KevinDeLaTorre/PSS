@@ -50,7 +50,7 @@ public class DataFile {
    * @return listOfTasks Returns the processed tasks from the file.
    */
   private boolean readFile() {
-    _listOfTasks = (ArrayList) jsonToTask().clone();
+    _listOfTasks = (ArrayList<Task>) jsonToTask().clone();
     return true;
   }
 
@@ -72,16 +72,16 @@ public class DataFile {
       // All of the number values are converted to String when writing onto Json file, so when reading the Json
       // file, we don't have to worry about casting different type of data
       if (taskObj.isRecurringTask()) {
-        jsonObj.put("StartDate", Integer.toString(taskObj.getStartDate()));
-        jsonObj.put("StartTime", Double.toString(taskObj.getStartTime()));
-        jsonObj.put("Duration", Double.toString(taskObj.getDuration()));
-        jsonObj.put("EndDate", Integer.toString(((RecurringTask) taskObj).getEndDate()));
-        jsonObj.put("Frequency", Integer.toString(((RecurringTask) taskObj).getFrequency()));
+        jsonObj.put("StartDate", taskObj.getStartDate());
+        jsonObj.put("StartTime", taskObj.getStartTime());
+        jsonObj.put("Duration", taskObj.getDuration());
+        jsonObj.put("EndDate", ((RecurringTask) taskObj).getEndDate());
+        jsonObj.put("Frequency", ((RecurringTask) taskObj).getFrequency());
       }
       else {
-        jsonObj.put("Date", Integer.toString(taskObj.getStartDate()));
-        jsonObj.put("StartTime", Double.toString(taskObj.getStartTime()));
-        jsonObj.put("Duration", Double.toString(taskObj.getDuration()));
+        jsonObj.put("Date", taskObj.getStartDate());
+        jsonObj.put("StartTime", taskObj.getStartTime());
+        jsonObj.put("Duration", taskObj.getDuration());
       }
       jsonArray.add(jsonObj);
     }
@@ -105,31 +105,40 @@ public class DataFile {
         JSONObject jsonObj = iterator.next();
         String name = (String) jsonObj.get("Name");
         String type = (String) jsonObj.get("Type");
-        double startTime = Double.parseDouble((String) jsonObj.get("StartTime"));
-        double duration =  Double.parseDouble((String) jsonObj.get("Duration"));
+        double startTime = 0;
+        try {
+          startTime = (double)jsonObj.get("StartTime");
+        } catch ( Exception e ) {
+          startTime = Double.valueOf((long)jsonObj.get("StartTime"));
+        }
+        double duration = 0;
+        try {
+          duration = (double)jsonObj.get("Duration");
+        } catch ( Exception e ) {
+          duration = Double.valueOf((long)jsonObj.get("Duration"));
+        }
 
         if (jsonObj.containsKey("Frequency")) {
-          int endDate = Integer.parseInt((String) jsonObj.get("EndDate"));
-          int frequency = Integer.parseInt((String) jsonObj.get("Frequency"));
-          int startDate = Integer.parseInt((String) jsonObj.get("StartDate"));
+          int endDate = (int)(long)jsonObj.get("EndDate");
+          int frequency = (int)(long) jsonObj.get("Frequency");
+          int startDate = (int)(long) jsonObj.get("StartDate");
           try {
-          task = new RecurringTask(name, type, startTime, startDate, duration, endDate, frequency);
-          taskList.add(task);
+            task = new RecurringTask(name, type, startTime, startDate, duration, endDate, frequency);
+            taskList.add(task);
           } catch ( RestrictionCheckFailedException e ) {}
         }
         else {
-          int date = Integer.parseInt((String) jsonObj.get("Date"));
-          System.out.println( name );
+          int date = (int)(long)jsonObj.get("Date");
           if ( type.equals( "Cancellation" ) ) {
             try {
               task = new AntiTask(name, type, startTime, date, duration );
               taskList.add(task);
-            } catch ( RestrictionCheckFailedException e ) {}
+            } catch ( RestrictionCheckFailedException e ) { System.out.println( "ERROR ANTI" );}
           } else {
             try {
-            task = new Task(name, type, startTime, date, duration);
-            taskList.add(task);
-            } catch ( RestrictionCheckFailedException e ) {}
+              task = new TransientTask(name, type, startTime, date, duration);
+              taskList.add(task);
+            } catch ( RestrictionCheckFailedException e ) {System.out.println( "ERROR TRANSIENT" );}
           }
         }
       }
@@ -153,6 +162,7 @@ public class DataFile {
     try (FileWriter file = new FileWriter(_filename)) {
       file.write(taskToJson());
       file.flush();
+      file.close();
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -168,6 +178,10 @@ public class DataFile {
   public boolean updateTasks(ArrayList<Task> newTasks) {
     _listOfTasks = (ArrayList<Task>) newTasks.clone();
     return true;
+  }
+
+  public void setFilename( String filename ) {
+    _filename = filename;
   }
 
   /**
