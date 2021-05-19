@@ -1,0 +1,16 @@
+[
+  {
+    "Type": "Appointment",
+    "StartTime": "17.0",
+    "Duration": "2.5",
+    "Date": "20200427",
+    "Name": "Intern Interview"
+  },
+  {
+    "Type": "Study",
+    "StartTime": "16.0",
+    "Duration": "1.0",
+    "Date": "20210511",
+    "Name": "Do homework"
+  }
+]

@@ -1,5 +1,3 @@
-*.json
 *.zip
-*.txt
 
 !settings.json
