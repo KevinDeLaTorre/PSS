@@ -112,17 +112,26 @@ public class DataFile {
           int endDate = Integer.parseInt((String) jsonObj.get("EndDate"));
           int frequency = Integer.parseInt((String) jsonObj.get("Frequency"));
           int startDate = Integer.parseInt((String) jsonObj.get("StartDate"));
+          try {
           task = new RecurringTask(name, type, startTime, startDate, duration, endDate, frequency);
+          taskList.add(task);
+          } catch ( RestrictionCheckFailedException e ) {}
         }
         else {
           int date = Integer.parseInt((String) jsonObj.get("Date"));
+          System.out.println( name );
           if ( type.equals( "Cancellation" ) ) {
-            task = new AntiTask(name, type, startTime, date, duration );
+            try {
+              task = new AntiTask(name, type, startTime, date, duration );
+              taskList.add(task);
+            } catch ( RestrictionCheckFailedException e ) {}
           } else {
+            try {
             task = new Task(name, type, startTime, date, duration);
+            taskList.add(task);
+            } catch ( RestrictionCheckFailedException e ) {}
           }
         }
-        taskList.add(task);
       }
     } catch (FileNotFoundException e) {
       e.printStackTrace();
