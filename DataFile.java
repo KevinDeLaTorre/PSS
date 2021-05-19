@@ -93,7 +93,13 @@ public class DataFile {
    * @return output Returns a vector of Tasks
    */
   private ArrayList<Task> jsonToTask() {
-    ArrayList<Task> taskList = new ArrayList<Task>();
+    ArrayList<Task> finalTaskList = new ArrayList<Task>();
+    ArrayList<Task> recurringTaskList = new ArrayList<Task>();
+    ArrayList<Task> antiTaskList = new ArrayList<Task>();
+    ArrayList<Task> taskTaskList = new ArrayList<Task>();
+    ArrayList<Task> transientTaskList = new ArrayList<Task>();
+
+
     JSONParser parser = new JSONParser();
 
     try {
@@ -124,7 +130,7 @@ public class DataFile {
           int startDate = (int)(long) jsonObj.get("StartDate");
           try {
             task = new RecurringTask(name, type, startTime, startDate, duration, endDate, frequency);
-            taskList.add(task);
+            recurringTaskList.add(task);
           } catch ( RestrictionCheckFailedException e ) {}
         }
         else {
@@ -132,15 +138,35 @@ public class DataFile {
           if ( type.equals( "Cancellation" ) ) {
             try {
               task = new AntiTask(name, type, startTime, date, duration );
-              taskList.add(task);
-            } catch ( RestrictionCheckFailedException e ) { System.out.println( "ERROR ANTI" );}
+              antiTaskList.add(task);
+            } catch ( RestrictionCheckFailedException e ) {}
           } else {
             try {
               task = new TransientTask(name, type, startTime, date, duration);
-              taskList.add(task);
-            } catch ( RestrictionCheckFailedException e ) {System.out.println( "ERROR TRANSIENT" );}
+              transientTaskList.add(task);
+            } catch ( RestrictionCheckFailedException e ) {
+              try {
+                // If transient task failed could be because of type mismatch so try task instead
+              task = new Task(name, type, startTime, date, duration);
+              taskTaskList.add( task );
+              } catch ( RestrictionCheckFailedException f ) {}
+            }
           }
         }
+      }
+      // Split into 3 different lists because of scheduling issues where transient tasks weren't getting scheduled on the reread because they are sorted later on before anti-tasks
+      // So split the tasks into 3 lists then go in order of recurring -> anti -> transient to make sure everything is where it should be.
+      for ( int i = 0; i < recurringTaskList.size(); i++ ) {
+        finalTaskList.add( recurringTaskList.get( i ) );
+      }
+      for ( int i = 0; i < antiTaskList.size(); i++ ) {
+        finalTaskList.add( antiTaskList.get( i ) );
+      }
+      for ( int i = 0; i < transientTaskList.size(); i++ ) {
+        finalTaskList.add( transientTaskList.get( i ) );
+      }
+      for ( int i = 0; i < taskTaskList.size(); i++ ) {
+        finalTaskList.add( taskTaskList.get( i ) );
       }
     } catch (FileNotFoundException e) {
       e.printStackTrace();
@@ -151,7 +177,7 @@ public class DataFile {
     } catch (Exception e) {
       e.printStackTrace();
     }
-    return taskList;
+    return finalTaskList;
   }
 
   /**
