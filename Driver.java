@@ -19,12 +19,13 @@ public class Driver {
         
         System.out.print("Enter your user name(or name of file you'd like to use): ");
         username = scan.nextLine();
-        String filename = username + ".json";
+        String readFilename = username + ".json";
+        String filename = username + "-db.json";
         File file = new File( filename );
         DataFile user;
         if ( file.exists() == false ) { // Check if file exists
             System.out.print( "Creating file..." + filename );
-            user = new DataFile( filename, false ); // if it doesn't create a blank file using username
+            user = new DataFile( readFilename, false ); // if it doesn't create a blank file using username
             System.out.println( " done" );
         } else {
             System.out.print( "Reading file..." + filename );
