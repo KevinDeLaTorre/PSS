@@ -41,4 +41,9 @@ public class TransientTask extends Task {
 	    }
 	    return contains;
 	  }
+
+		public TransientTask clone() {
+			TransientTask tmp = new TransientTask(getName(), getType(), getStartTime(), getStartDate(), getDuration() );
+			return tmp;
+		}
 }

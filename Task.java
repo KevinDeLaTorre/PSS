@@ -120,7 +120,38 @@ public class Task implements Comparable<Task> {
   public double getDuration() {
     return _duration;
   }
-  
+
+  public void setTaskName(String _taskName) {
+    this._taskName = _taskName;
+  }
+
+  public boolean setStartTime(double _startTime) {
+    if ( checkRestrictions(getName(), _startTime, getDuration(), getStartDate() ) ) {
+      this._startTime = _startTime;
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  public boolean setStartDate(int _startDate) {
+    if ( checkDate( _startDate ) ) {
+      this._startDate = _startDate;
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  public boolean setDuration(double _duration) {
+    if ( checkRestrictions(getName(), getStartTime(), _duration, getStartDate() ) ) {
+      this._duration = _duration;
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   /**
    * Compares 2 tasks to sort in list by adding the date and time together and the smaller should be first meaning it goes before the other in the schedule.
    * @param otherTask
@@ -132,6 +163,11 @@ public class Task implements Comparable<Task> {
 
   public String getTaskType() {
     return TASKTYPE;
+  }
+
+  public Task clone() {
+    Task tmpTask = new Task(getName(), getType(), getStartTime(), getStartDate(), getDuration() );
+    return tmpTask;
   }
 
   /**

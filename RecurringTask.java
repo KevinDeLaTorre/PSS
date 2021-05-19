@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-public class RecurringTask extends Task{
+public class RecurringTask extends Task {
 	
 	// resurring task types
 	private final String[] typesArray = { "Class", "Study", "Sleep", "Exercise", "Work", "Meal" };
@@ -88,6 +88,24 @@ public class RecurringTask extends Task{
 		return _frequency;
 	}
 
+	public boolean setEndDate( int endDate ) {
+		if ( checkDate( endDate ) ) {
+			_endDate = endDate;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public boolean setFrequency( int frequency ) {
+		if ( checkRestrictions(getStartDate(), getEndDate(), frequency ) ) {
+			_frequency = frequency;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	/**
     * Checks to make sure this task is a recurring task.
     * @return Returns true
@@ -95,6 +113,9 @@ public class RecurringTask extends Task{
 	public boolean isRecurringTask() {
 		return true;
 	}
+
+	public RecurringTask clone() {
+		RecurringTask tmp = new RecurringTask(getName(), getType(), getStartTime(), getStartDate(), getDuration(), getEndDate(), getFrequency());
+		return tmp;
+	}
 }
-
-

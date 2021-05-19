@@ -41,4 +41,8 @@ public class AntiTask extends Task {
 	    return contains;
 	  }
 	
+		public AntiTask clone() {
+			AntiTask tmp = new AntiTask(getName(), getType(), getStartTime(), getStartDate(), getDuration() );
+			return tmp;
+		}
 }
