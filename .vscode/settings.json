@@ -1,9 +1,0 @@
-{
-    "java.project.referencedLibraries": [
-        "lib/**/*.jar",
-        "java_simple/json-simple-1.1.1.jar"
-    ],
-    "java.project.sourcePaths": [
-        ""
-    ]
-}
