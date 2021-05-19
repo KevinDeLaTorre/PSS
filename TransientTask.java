@@ -34,7 +34,7 @@ public class TransientTask extends Task {
 	    // Checks to make sure a valid type is given, makes the type "Error" if not
 	    boolean contains = false;
 	    for ( int i = 0; i < types.length; i++ ) {
-	      if ( type == types[i] ) {
+	      if ( type.equals(types[i]) ) {
 	        contains = true;
 	        break;
 	      }
