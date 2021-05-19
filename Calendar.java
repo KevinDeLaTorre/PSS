@@ -140,8 +140,8 @@ public class Calendar {
    * @param updatedTask Updated task of the one you want to edit, has to have same name of task in listOfTasks.
    * @return success Returns true if scheduled task successfully
    */
-  public boolean editTask( Task updatedTask ) {
-    deleteTask( updatedTask.getName() );
+  public boolean editTask( String oldTaskName, Task updatedTask ) {
+    deleteTask( oldTaskName );
     return scheduleTask( updatedTask );
   }
 
@@ -241,6 +241,13 @@ public class Calendar {
   public String generatePartReport(int fromDate, int toDate) {
     Report report = new Report(getAllTasks());
     return report.generatePartSchedule(fromDate, toDate);
+  }
+
+  public String generateSingleTaskReport( Task task ) {
+    ArrayList<Task> tmp = new ArrayList<Task>();
+    tmp.add( task );
+    Report report = new Report( tmp );
+    return report.generateFullSchedule();
   }
 
   /**
