@@ -17,7 +17,7 @@ public class Driver {
         int frequency;
         double duration;
         
-        System.out.print("Enter your user name: ");
+        System.out.print("Enter your user name(or name of file you'd like to use): ");
         username = scan.nextLine();
         String filename = username + ".json";
         File file = new File( filename );
@@ -45,7 +45,7 @@ public class Driver {
             System.out.print("Enter your choice: ");
             choice = scan.nextInt();
 
-            if ( choice < 4 ) { // If generating report don't need to ask about kind of task
+            if ( choice < 2 ) { // If generating report don't need to ask about kind of task
                 System.out.println("What kind of task are you using?");
                 System.out.println("a. Task");
                 System.out.println("b. Recurring task");
@@ -54,8 +54,8 @@ public class Driver {
 
                 System.out.println("Enter your choice: (a-d) ");
                 answer = scan.next().charAt(0);
-                scan.nextLine();
             }
+            scan.nextLine(); // Clear scanner buffer
 
             switch(choice) {
                 case 1:
@@ -134,7 +134,6 @@ public class Driver {
 
                             break;
                     }
-
                     break;
                 case 2:
                     System.out.println("Edit a task");
@@ -207,81 +206,17 @@ public class Driver {
 
                             break;
                     }
-
                     break;
 
                 case 3:
-                    System.out.println("Delete a task");
-                    switch(answer) {
-                        case 'a':
-                            System.out.print("What is the task name you are scheduling? ");
-                            taskName = scan.nextLine();
-                            printTypes();
-                            System.out.print("What type of task are you scheduling? ");
-                            type = scan.nextLine();
-                            System.out.print("What is the start time?");
-                            startTime = scan.nextDouble();
-                            System.out.print("What is the start date? ");
-                            startDate = scan.nextInt();
-                            System.out.print("What is the duration of the task? ");
-                            duration = scan.nextInt();
-                            Task t = new Task(taskName, type, startTime, startDate, duration);
-                            schedule.scheduleTask(t);
-
-                            break;
-
-                        case 'b':
-                            System.out.print("What is the task name you are scheduling? ");
-                            taskName = scan.nextLine();
-                            printRTypes();
-                            System.out.print("What type of task are you scheduling? ");
-                            type = scan.nextLine();
-                            System.out.print("What is the start time?");
-                            startTime = scan.nextDouble();
-                            System.out.print("What is the start date? ");
-                            startDate = scan.nextInt();
-                            System.out.print("What is the end date? ");
-                            endDate = scan.nextInt();
-                            System.out.print("What is the duration of the task? ");
-                            duration = scan.nextInt();
-                            System.out.print("Enter the frequency: ");
-                            frequency = scan.nextInt();
-                            RecurringTask r = new RecurringTask(taskName, type, startTime, startDate, duration, endDate, frequency);
-                            schedule.scheduleTask(r);
-
-                            break;
-                        case 'c':
-                            System.out.print("What is the task name you are scheduling? ");
-                            taskName = scan.nextLine();
-                            printTTypes();
-                            System.out.print("What type of task are you scheduling? ");
-                            type = scan.nextLine();
-                            System.out.print("What is the start time?");
-                            startTime = scan.nextDouble();
-                            System.out.print("What is the start date? ");
-                            startDate = scan.nextInt();
-                            System.out.print("What is the duration of the task? ");
-                            duration = scan.nextInt();
-                            TransientTask tr = new TransientTask(taskName, type, startTime, startDate, duration);
-                            schedule.scheduleTask(tr);
-
-                            break;
-                        case 'd':
-                             System.out.print("What is the task name you are scheduling? ");
-                            taskName = scan.nextLine();
-                            type = "Cancellation";
-                            System.out.print("What is the start time?");
-                            startTime = scan.nextDouble();
-                            System.out.print("What is the start date? ");
-                            startDate = scan.nextInt();
-                            System.out.print("What is the duration of the task? ");
-                            duration = scan.nextInt();
-                            AntiTask a = new AntiTask(taskName, type, startTime, startDate, duration);
-                            schedule.scheduleTask(a);
-
-                            break;
+                    System.out.println("\n| DELETE A TASK |");
+                    System.out.print("What is the name of the task you want to delete (Has to be exact name)? ");
+                    taskName = scan.nextLine();
+                    if (schedule.deleteTask( taskName )) {
+                        System.out.println( "Successfully deleted task(s)." );
+                    } else {
+                        System.out.println( "Failed to delete task." );
                     }
-
                     break;
 
                 case 4:
