@@ -86,15 +86,31 @@ public class Calendar {
         double tmpTaskEnd = ( tmpTaskStart + tmpTask.getDuration() );
         // Check if newtask startTime is within timeslot of other task
         if ( taskStart >= tmpTaskStart && taskStart < tmpTaskEnd ) {
-          return true;
+          return handleAnti( tmpTask, task );
         } else if ( taskEnd >= tmpTaskStart && taskEnd <= tmpTaskEnd ) { // Check if newtask endTime is within timeslot of other task
-          return true;
+          return handleAnti( tmpTask, task );
         } else if ( taskStart < tmpTaskStart && taskEnd > tmpTaskEnd ) { // Check if other task is within newtask timeslot
-          return true;
+          return handleAnti( tmpTask, task );
         }
       }
     }
     return false;
+  }
+
+  private boolean handleAnti( Task one, Task two ) {
+    // If a recurring task conflicts with an antitask, delete that single recurring task and put in the antitask
+    if ( one.isRecurringTask() && two.getTaskType().equals( "ANTI" ) ) { 
+      deleteTaskOnDate( one.getName(), one.getStartDate() );
+      return false;
+    // If Anti task conflicts with another anti task, report confliction
+    } else if ( one.getTaskType().equals( "ANTI" ) && two.getTaskType().equals( "ANTI" ) ) {
+      return true;
+    // If an antitask conflicts with other non-recurring task then that means other task is transient so allow it
+    } else if ( one.getTaskType().equals( "ANTI" ) && !two.isRecurringTask() ) { 
+      return false;
+    }
+    // Anything else is a genuine conflict so report it
+    return true;
   }
 
   /**
@@ -173,6 +189,20 @@ public class Calendar {
           }
           return true;
         }
+      }
+    }
+    updateFile();
+    return false; // If task not found return false
+  }
+
+  public boolean deleteTaskOnDate( String taskName, int date ) {
+    int key = date;
+    for ( int j = 0; j < _listOfTasks.get( key ).size(); j++ ) { // Search through arraylist of key
+      System.out.println( _listOfTasks.get( key ).get( j ).getName() );
+      if ( _listOfTasks.get( key ).get( j ).getName().equals( taskName ) ) {
+        _listOfTasks.get( key ).remove( _listOfTasks.get( key ).get( j ) ); // If task found delete 
+        deleteTask( taskName, true);
+        return true;
       }
     }
     updateFile();
