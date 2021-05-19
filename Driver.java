@@ -17,7 +17,7 @@ public class Driver {
         int frequency;
         double duration;
         
-        System.out.print("Enter your user name(or name of file you'd like to use): ");
+        System.out.print("Enter your user name: ");
         username = scan.nextLine();
         String filename = username + "-db.json";
         File file = new File( filename );
