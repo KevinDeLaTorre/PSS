@@ -143,7 +143,7 @@ public class Calendar {
   public boolean editTask( String oldTaskName, Task updatedTask ) {
     try {
       Task tmp = getTask( oldTaskName ).clone();
-      deleteTask( oldTaskName );
+      deleteTask( oldTaskName, true );
       if ( !scheduleTask( updatedTask ) ) {
         scheduleTask( tmp );
         return false;
@@ -158,17 +158,18 @@ public class Calendar {
   /**
    * Searches listOfTasks for task and if found deletes it from list
    * @param taskName Name of task to search
+   * @param singleRecurring If true delete all recurring tasks of given name, if false just first encountered.
    * @return Returns true/false depending on if task was successfully deleted or wasn't found.
    */
-  public boolean deleteTask( String taskName ) {
+  public boolean deleteTask( String taskName, boolean singleRecurring ) {
     for ( int key : _keys ) { // Search all keys in listOfTasks
       for ( int j = 0; j < _listOfTasks.get( key ).size(); j++ ) { // Search through arraylist of key
         System.out.println( _listOfTasks.get( key ).get( j ).getName() );
         if ( _listOfTasks.get( key ).get( j ).getName().equals( taskName ) ) {
           boolean isRecurringTask = _listOfTasks.get( key ).get( j ).isRecurringTask();
           _listOfTasks.get( key ).remove( _listOfTasks.get( key ).get( j ) ); // If task found delete 
-          if ( isRecurringTask ) {
-            deleteTask( taskName );
+          if ( isRecurringTask && !singleRecurring ) {
+            deleteTask( taskName, false );
           }
           return true;
         }
@@ -212,6 +213,19 @@ public class Calendar {
     }
 
     return tmpList;
+  }
+
+  public Task getTaskFromDate( String taskName, int date ) throws TaskNotFoundException{
+    if ( !_keys.contains( date ) ) {
+      throw new TaskNotFoundException( "Date doesn't exist." );
+    }
+    ArrayList<Task> tmpList = getPartTasks( date, 1 );
+    for ( int i = 0; i < tmpList.size(); i++ ) {
+      if ( tmpList.get( i ).getName().equals( taskName ) ) {
+        return tmpList.get( i );
+      }
+    }
+    throw new TaskNotFoundException( "Task not found. " );
   }
 
   /**
