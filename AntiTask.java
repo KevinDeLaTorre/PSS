@@ -6,7 +6,7 @@ public class AntiTask extends Task {
 	public AntiTask(String taskName, String type, double startTime, int startDate, double duration) throws RestrictionCheckFailedException {
 		super(taskName, type, startTime, startDate, duration);
 		
-		if(checkRestrictions(super.getType()) == false) {
+		if(checkRestrictions( type ) == false) {
 		      throw new RestrictionCheckFailedException( "Restriction check failed." );
 		}
 	}
@@ -21,6 +21,7 @@ public class AntiTask extends Task {
 		boolean antiType = checkThisType(type); 
 		if (antiType == true)
 			return true; 
+		System.out.println( "Failed at anti check restrictions" );
 		return false;
 	}
 	
@@ -31,14 +32,7 @@ public class AntiTask extends Task {
 	   */
 	  public boolean checkThisType( String type ) {
 	    // Checks to make sure a valid type is given, makes the type "Error" if not
-	    boolean contains = false;
-	    for ( int i = 0; i < types.length; i++ ) {
-	      if ( type == types[i] ) {
-	        contains = true;
-	        break;
-	      }
-	    }
-	    return contains;
+			return ( type.equals( "Cancellation"));
 	  }
 	
 		public AntiTask clone() {
