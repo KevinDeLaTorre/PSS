@@ -46,7 +46,7 @@ public class Driver {
             choice = scan.nextInt();
 
             if ( choice < 2 ) { // If generating report don't need to ask about kind of task
-                System.out.println("What kind of task are you using?");
+                System.out.println("What kind of task do you want to schedule?");
                 System.out.println("a. Task");
                 System.out.println("b. Recurring task");
                 System.out.println("c. Transient task");
@@ -59,11 +59,11 @@ public class Driver {
 
             switch(choice) {
                 case 1:
-                    System.out.println("Schedule a task");
+                    System.out.println("\n| SCHEDULE A TASK |");
+                    System.out.print("What is the name of the task you want to schedule? ");
+                    taskName = scan.nextLine();
                     switch(answer) {
                         case 'a':
-                            System.out.print("What is the task name you are scheduling? ");
-                            taskName = scan.nextLine();
                             printTypes();
                             System.out.print("What type of task are you scheduling? ");
                             type = scan.nextLine();
@@ -81,8 +81,6 @@ public class Driver {
                             break;
 
                         case 'b':
-                            System.out.print("What is the task name you are scheduling? ");
-                            taskName = scan.nextLine();
                             printRTypes();
                             System.out.print("What type of task are you scheduling? ");
                             type = scan.nextLine();
@@ -104,8 +102,6 @@ public class Driver {
 
                             break;
                         case 'c':
-                            System.out.print("What is the task name you are scheduling? ");
-                            taskName = scan.nextLine();
                             printTTypes();
                             System.out.print("What type of task are you scheduling? ");
                             type = scan.nextLine();
@@ -117,11 +113,8 @@ public class Driver {
                             duration = scan.nextDouble();
                             TransientTask tr = new TransientTask(taskName, type, startTime, startDate, duration);
                             schedule.scheduleTask(tr);
-
                             break;
                         case 'd':
-                             System.out.print("What is the task name you are scheduling? ");
-                            taskName = scan.nextLine();
                             type = "Cancellation";
                             System.out.print("What is the start time? ");
                             startTime = scan.nextDouble();
@@ -131,86 +124,99 @@ public class Driver {
                             duration = scan.nextDouble();
                             AntiTask a = new AntiTask(taskName, type, startTime, startDate, duration);
                             schedule.scheduleTask(a);
-
                             break;
                     }
                     break;
                 case 2:
-                    System.out.println("Edit a task");
-                    switch(answer) {
-                        case 'a':
-                            System.out.print("What is the task name you are scheduling? ");
-                            taskName = scan.nextLine();
-                            printTypes();
-                            System.out.print("What type of task are you scheduling? ");
-                            type = scan.nextLine();
-                            System.out.print("What is the start time?");
-                            startTime = scan.nextDouble();
-                            System.out.print("What is the start date? ");
-                            startDate = scan.nextInt();
-                            System.out.print("What is the duration of the task? ");
-                            duration = scan.nextInt();
-                            Task t = new Task(taskName, type, startTime, startDate, duration);
-                            schedule.scheduleTask(t);
-
-                            break;
-
-                        case 'b':
-                            System.out.print("What is the task name you are scheduling? ");
-                            taskName = scan.nextLine();
-                            printRTypes();
-                            System.out.print("What type of task are you scheduling? ");
-                            type = scan.nextLine();
-                            System.out.print("What is the start time?");
-                            startTime = scan.nextDouble();
-                            System.out.print("What is the start date? ");
-                            startDate = scan.nextInt();
-                            System.out.print("What is the end date? ");
-                            endDate = scan.nextInt();
-                            System.out.print("What is the duration of the task? ");
-                            duration = scan.nextInt();
-                            System.out.print("Enter the frequency: ");
-                            frequency = scan.nextInt();
-                            RecurringTask r = new RecurringTask(taskName, type, startTime, startDate, duration, endDate, frequency);
-                            schedule.scheduleTask(r);
-
-                            break;
-                        case 'c':
-                            System.out.print("What is the task name you are scheduling? ");
-                            taskName = scan.nextLine();
-                            printTTypes();
-                            System.out.print("What type of task are you scheduling? ");
-                            type = scan.nextLine();
-                            System.out.print("What is the start time?");
-                            startTime = scan.nextDouble();
-                            System.out.print("What is the start date? ");
-                            startDate = scan.nextInt();
-                            System.out.print("What is the duration of the task? ");
-                            duration = scan.nextInt();
-                            TransientTask tr = new TransientTask(taskName, type, startTime, startDate, duration);
-                            schedule.scheduleTask(tr);
-
-                            break;
-                        case 'd':
-                             System.out.print("What is the task name you are scheduling? ");
-                            taskName = scan.nextLine();
-                            type = "Cancellation";
-                            System.out.print("What is the start time?");
-                            startTime = scan.nextDouble();
-                            System.out.print("What is the start date? ");
-                            startDate = scan.nextInt();
-                            System.out.print("What is the duration of the task? ");
-                            duration = scan.nextInt();
-                            AntiTask a = new AntiTask(taskName, type, startTime, startDate, duration);
-                            schedule.scheduleTask(a);
-
-                            break;
+                    System.out.println("\n| EDIT A TASK |");
+                    System.out.print("What is the name of the task you would like to edit (case-sensitive)? ");
+                    taskName = scan.nextLine();
+                    try {
+                        Task newTask = schedule.getTask( taskName ).clone();
+                        boolean editing = true;
+                        while ( editing ) {
+                            System.out.println( "\n" + schedule.generateSingleTaskReport( newTask ) );
+                            System.out.println( "What would you like to edit? " );
+                            printEditOptions( newTask );
+                            int response = scan.nextInt();
+                            switch (response) {
+                                case 0:
+                                    editing = false;
+                                    break;
+                                case 1:
+                                    System.out.print( "Enter new date (YYYYMMDD): " );
+                                    int newDate = scan.nextInt();
+                                    if ( !newTask.setStartDate( newDate ) ) {
+                                        System.out.println( "Invalid Date, keeping old one." );
+                                    }
+                                    break;
+                                case 2:
+                                    System.out.print( "Enter new name: " );
+                                    if ( scan.hasNextLine() ) {
+                                        scan.nextLine(); // Clear buffer
+                                    }
+                                    String newName = scan.nextLine();
+                                    newTask.setTaskName( newName );
+                                    break;
+                                case 3:
+                                    System.out.print( "Enter new start time: " );
+                                    double newTime = scan.nextDouble();
+                                    if ( !newTask.setStartTime( newTime ) ) {
+                                        System.out.println( "Invalid Start Time, keeping old one." );
+                                    }
+                                    break;
+                                case 4:
+                                    System.out.print( "Enter new duration: " );
+                                    double newDuration = scan.nextDouble();
+                                    if ( !newTask.setDuration( newDuration ) ) {
+                                        System.out.println( "Invalid Duration, keeping old one." );
+                                    }
+                                    break;
+                                case 5:
+                                    if ( newTask.isRecurringTask() ) {
+                                        RecurringTask tmpNewTask = (RecurringTask)newTask.clone();
+                                        System.out.println( "Enter new end date (YYYYMMDD): " );
+                                        int newEndDate = scan.nextInt();
+                                        if ( !tmpNewTask.setEndDate( newEndDate ) ) {
+                                            System.out.println( "Invalid End Date, keeping old one." );
+                                        }
+                                        newTask = tmpNewTask;
+                                    } else {
+                                        System.out.println( "Invalid option entered" );
+                                    }
+                                    break;
+                                case 6:
+                                    if ( newTask.isRecurringTask() ) {
+                                        RecurringTask tmpNewTask = (RecurringTask)newTask.clone();
+                                        System.out.println( "Enter new frequency: " );
+                                        int newFrequency = scan.nextInt();
+                                        if ( !tmpNewTask.setFrequency( newFrequency ) ) {
+                                            System.out.println( "Invalid End Date, keeping old one." );
+                                        }
+                                        newTask = tmpNewTask;
+                                    } else {
+                                        System.out.println( "Invalid option entered" );
+                                    }
+                                    break;
+                                default:
+                                    if ( response != 5 || response != 6 ) { // Prevents a double print
+                                        System.out.println( "Invalid option entered" );
+                                    }
+                                }
+                        }
+                        System.out.print( "Attempting to schedule edited task..." );
+                        if ( schedule.editTask( taskName, newTask ) ) {
+                            System.out.println( "SUCCESS" );
+                        } else {
+                            System.out.println( "FAILED ( Keeping old task )" );
+                        }
+                    } catch ( TaskNotFoundException e ) {
+                        System.out.println( "Task could not be found." );
                     }
                     break;
-
                 case 3:
                     System.out.println("\n| DELETE A TASK |");
-                    System.out.print("What is the name of the task you want to delete (Has to be exact name)? ");
+                    System.out.print("What is the name of the task you want to delete (case-sensitive)? ");
                     taskName = scan.nextLine();
                     if (schedule.deleteTask( taskName )) {
                         System.out.println( "Successfully deleted task(s)." );
@@ -230,9 +236,20 @@ public class Driver {
         }
         scan.close();
     }    
+    
+    static void printEditOptions( Task task ) {
+        System.out.println( "0. Schedule Edited Task" );
+        System.out.println( "1. Date" );
+        System.out.println( "2. Name" );
+        System.out.println( "3. Time" );
+        System.out.println( "4. Duration" );
+        if ( task.isRecurringTask() ) {
+            System.out.println( "5. End Date" );
+            System.out.println( "6. Frequency" );
+        }
+    }
 
     // Tasks types
-
     static void printTypes() {
         System.out.println("");
         System.out.println("Types of tasks");
