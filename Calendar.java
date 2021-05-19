@@ -141,8 +141,18 @@ public class Calendar {
    * @return success Returns true if scheduled task successfully
    */
   public boolean editTask( String oldTaskName, Task updatedTask ) {
-    deleteTask( oldTaskName );
-    return scheduleTask( updatedTask );
+    try {
+      Task tmp = getTask( oldTaskName ).clone();
+      deleteTask( oldTaskName );
+      if ( !scheduleTask( updatedTask ) ) {
+        scheduleTask( tmp );
+        return false;
+      } else {
+        return true;
+      }
+    } catch ( TaskNotFoundException e ) {
+      return false;
+    }
   }
 
   /**
@@ -160,7 +170,6 @@ public class Calendar {
           if ( isRecurringTask ) {
             deleteTask( taskName );
           }
-          System.out.println( "Task '" + taskName + "' successfully deleted.");
           return true;
         }
       }
